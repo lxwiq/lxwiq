@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1060 354" width="1060" height="354" role="img" aria-label="Featured projects by lxwiq" font-family="'Segoe UI', system-ui, -apple-system, Helvetica, Arial, sans-serif">
+  <defs>
+    <linearGradient id="bgD" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#181209"/>
+      <stop offset="55%" stop-color="#0F0C08"/>
+      <stop offset="100%" stop-color="#090706"/>
+    </linearGradient>
+    <radialGradient id="glowD" cx="0.9" cy="0.06" r="0.85">
+      <stop offset="0%" stop-color="#F5C24B" stop-opacity="0.2"/>
+      <stop offset="55%" stop-color="#E0862A" stop-opacity="0.05"/>
+      <stop offset="100%" stop-color="#E0862A" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="ruleD" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#F5C24B" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#F5C24B" stop-opacity="0"/>
+    </linearGradient>
+    <pattern id="dotsD" width="26" height="26" patternUnits="userSpaceOnUse">
+      <circle cx="1.4" cy="1.4" r="1.4" fill="#F5C24B" fill-opacity="0.055"/>
+    </pattern>
+    <clipPath id="cardD"><rect x="0" y="0" width="1060" height="354" rx="22"/></clipPath>
+  </defs>
+  <g clip-path="url(#cardD)">
+    <rect width="1060" height="354" fill="url(#bgD)"/>
+    <rect width="1060" height="354" fill="url(#dotsD)"/>
+    <rect width="1060" height="354" fill="url(#glowD)"/>
+    <g><animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="0.15s" fill="freeze"/>
+      <rect x="30" y="20" width="500" height="152" rx="16" fill="#F5C24B" fill-opacity="0.035" stroke="#3A2C17" stroke-width="1.5"/>
+      <rect x="30" y="38" width="4" height="116" rx="2" fill="#E0862A"/>
+      <text x="58" y="60" fill="#F5C24B" font-size="18" font-weight="700">JellyFish</text>
+      <text x="58" y="86" fill="#B49E85" font-size="13.5">A modern, cross-platform Jellyfin client built with Kotlin Multiplatform</text>
+      <text x="58" y="106" fill="#B49E85" font-size="13.5">and Compose Multiplatform.</text>
+      <g transform="translate(58 146)">
+        <circle cx="6" cy="-4.5" r="6" fill="#A97BFF"/>
+        <text x="20" y="0" fill="#7C6C5A" font-size="13">Kotlin</text>
+        <g transform="translate(65 0)">
+          <path d="M7 -14.5 L9 -10.4 L13.5 -9.8 L10.2 -6.6 L11 -2.1 L7 -4.2 L3 -2.1 L3.8 -6.6 L0.5 -9.8 L5 -10.4 Z" fill="#E0862A"/>
+          <text x="20" y="0" fill="#7C6C5A" font-size="13">0 stars</text>
+          <text x="72" y="0" fill="#7C6C5A" font-size="13">·  0 forks</text>
+        </g>
+      </g>
+    </g>
+    <g><animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="0.25s" fill="freeze"/>
+      <rect x="550" y="20" width="500" height="152" rx="16" fill="#F5C24B" fill-opacity="0.035" stroke="#3A2C17" stroke-width="1.5"/>
+      <rect x="550" y="38" width="4" height="116" rx="2" fill="#E0862A"/>
+      <text x="578" y="60" fill="#F5C24B" font-size="18" font-weight="700">AudioSort</text>
+      <text x="578" y="86" fill="#B49E85" font-size="13.5">Organize your audiobook collection with intelligence and automation</text>
+      <g transform="translate(578 146)">
+        <circle cx="6" cy="-4.5" r="6" fill="#00ADD8"/>
+        <text x="20" y="0" fill="#7C6C5A" font-size="13">Go</text>
+        <g transform="translate(46 0)">
+          <path d="M7 -14.5 L9 -10.4 L13.5 -9.8 L10.2 -6.6 L11 -2.1 L7 -4.2 L3 -2.1 L3.8 -6.6 L0.5 -9.8 L5 -10.4 Z" fill="#E0862A"/>
+          <text x="20" y="0" fill="#7C6C5A" font-size="13">6 stars</text>
+          <text x="72" y="0" fill="#7C6C5A" font-size="13">·  0 forks</text>
+        </g>
+      </g>
+    </g>
+    <g><animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="0.35s" fill="freeze"/>
+      <rect x="30" y="192" width="500" height="152" rx="16" fill="#F5C24B" fill-opacity="0.035" stroke="#3A2C17" stroke-width="1.5"/>
+      <rect x="30" y="210" width="4" height="116" rx="2" fill="#E0862A"/>
+      <text x="58" y="232" fill="#F5C24B" font-size="18" font-weight="700">palworld-wine-egg</text>
+      <text x="58" y="258" fill="#B49E85" font-size="13.5">Pelican/Pterodactyl egg running the Palworld Windows dedicated server</text>
+      <text x="58" y="278" fill="#B49E85" font-size="13.5">under Wine, so UE4SS server-side mods actually load (Proton cannot).</text>
+      <g transform="translate(58 318)">
+        
+        <g transform="translate(0 0)">
+          <path d="M7 -14.5 L9 -10.4 L13.5 -9.8 L10.2 -6.6 L11 -2.1 L7 -4.2 L3 -2.1 L3.8 -6.6 L0.5 -9.8 L5 -10.4 Z" fill="#E0862A"/>
+          <text x="20" y="0" fill="#7C6C5A" font-size="13">0 stars</text>
+          <text x="72" y="0" fill="#7C6C5A" font-size="13">·  0 forks</text>
+        </g>
+      </g>
+    </g>
+    <g><animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="0.45000000000000007s" fill="freeze"/>
+      <rect x="550" y="192" width="500" height="152" rx="16" fill="#F5C24B" fill-opacity="0.035" stroke="#3A2C17" stroke-width="1.5"/>
+      <rect x="550" y="210" width="4" height="116" rx="2" fill="#E0862A"/>
+      <text x="578" y="232" fill="#F5C24B" font-size="18" font-weight="700">soundground</text>
+      <text x="578" y="258" fill="#B49E85" font-size="13.5">SoundGround is a sleek web application enabling users to effortlessly</text>
+      <text x="578" y="278" fill="#B49E85" font-size="13.5">download and stream music directly from YouTube and SoundCloud. Di…</text>
+      <g transform="translate(578 318)">
+        <circle cx="6" cy="-4.5" r="6" fill="#f1e05a"/>
+        <text x="20" y="0" fill="#7C6C5A" font-size="13">JavaScript</text>
+        <g transform="translate(93 0)">
+          <path d="M7 -14.5 L9 -10.4 L13.5 -9.8 L10.2 -6.6 L11 -2.1 L7 -4.2 L3 -2.1 L3.8 -6.6 L0.5 -9.8 L5 -10.4 Z" fill="#E0862A"/>
+          <text x="20" y="0" fill="#7C6C5A" font-size="13">2 stars</text>
+          <text x="72" y="0" fill="#7C6C5A" font-size="13">·  0 forks</text>
+        </g>
+      </g>
+    </g>
+    <rect x="1" y="1" width="1058" height="352" rx="22" fill="none" stroke="#3A2C17" stroke-width="2"/>
+  </g>
+</svg>

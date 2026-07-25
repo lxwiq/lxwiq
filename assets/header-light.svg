@@ -1,0 +1,109 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 300" width="1200" height="300" role="img" aria-label="Loic - Full-stack Developer at Baguetoast">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#FFFCF5"/>
+      <stop offset="55%" stop-color="#FEF6E7"/>
+      <stop offset="100%" stop-color="#FBEBD2"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.80" cy="0.16" r="0.70">
+      <stop offset="0%" stop-color="#F0A62E" stop-opacity="0.22"/>
+      <stop offset="55%" stop-color="#E0862A" stop-opacity="0.06"/>
+      <stop offset="100%" stop-color="#E0862A" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="amber" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#D98A12"/>
+      <stop offset="45%" stop-color="#C2740F"/>
+      <stop offset="100%" stop-color="#9C520C"/>
+    </linearGradient>
+    <linearGradient id="crust" x1="0.2" y1="0" x2="0.8" y2="1">
+      <stop offset="0%" stop-color="#F6C462"/>
+      <stop offset="55%" stop-color="#E09734"/>
+      <stop offset="100%" stop-color="#B4651C"/>
+    </linearGradient>
+    <linearGradient id="crumb" x1="0.3" y1="0" x2="0.7" y2="1">
+      <stop offset="0%" stop-color="#FFF6DF"/>
+      <stop offset="100%" stop-color="#F6DCA9"/>
+    </linearGradient>
+    <linearGradient id="rule" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#C2740F" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#C2740F" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="sheen" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0"/>
+      <stop offset="50%" stop-color="#FFFFFF" stop-opacity="0.42"/>
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
+    </linearGradient>
+    <pattern id="dots" width="26" height="26" patternUnits="userSpaceOnUse">
+      <circle cx="1.4" cy="1.4" r="1.4" fill="#B4651C" fill-opacity="0.07"/>
+    </pattern>
+    <clipPath id="card"><rect x="0" y="0" width="1200" height="300" rx="26"/></clipPath>
+  </defs>
+
+  <g clip-path="url(#card)">
+    <rect width="1200" height="300" fill="url(#bg)"/>
+    <rect width="1200" height="300" fill="url(#dots)"/>
+    <rect width="1200" height="300" fill="url(#glow)"/>
+
+    <!-- drifting crumbs -->
+    <g fill="#C2740F">
+      <circle cx="742" cy="70" r="3" opacity="0.28">
+        <animate attributeName="cy" values="70;58;70" dur="7s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0.28;0.58;0.28" dur="7s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="816" cy="216" r="2.2" opacity="0.20">
+        <animate attributeName="cy" values="216;204;216" dur="9s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0.20;0.50;0.20" dur="9s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="1148" cy="238" r="2.6" opacity="0.24">
+        <animate attributeName="cy" values="238;226;238" dur="8s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0.24;0.55;0.24" dur="8s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="690" cy="252" r="1.8" opacity="0.18">
+        <animate attributeName="cy" values="252;242;252" dur="6.5s" repeatCount="indefinite"/>
+      </circle>
+    </g>
+
+    <!-- toast -->
+    <g transform="translate(918 48) scale(0.92)">
+      <g stroke="#B4651C" stroke-width="5" stroke-linecap="round" fill="none">
+        <path d="M74 34 C60 18 88 12 74 -6" opacity="0.40">
+          <animate attributeName="opacity" values="0.10;0.45;0.10" dur="4s" repeatCount="indefinite"/>
+          <animateTransform attributeName="transform" type="translate" values="0 6;0 -8;0 6" dur="4s" repeatCount="indefinite"/>
+        </path>
+        <path d="M110 26 C96 8 124 2 110 -18" opacity="0.32">
+          <animate attributeName="opacity" values="0.06;0.38;0.06" dur="5.2s" begin="0.8s" repeatCount="indefinite"/>
+          <animateTransform attributeName="transform" type="translate" values="0 6;0 -10;0 6" dur="5.2s" begin="0.8s" repeatCount="indefinite"/>
+        </path>
+        <path d="M146 34 C132 18 160 12 146 -6" opacity="0.28">
+          <animate attributeName="opacity" values="0.08;0.34;0.08" dur="4.6s" begin="1.6s" repeatCount="indefinite"/>
+          <animateTransform attributeName="transform" type="translate" values="0 6;0 -8;0 6" dur="4.6s" begin="1.6s" repeatCount="indefinite"/>
+        </path>
+      </g>
+      <path d="M20 172 L20 108 A30 30 0 0 1 50 78 A64 64 0 0 1 150 78 A30 30 0 0 1 180 108 L180 172 A20 20 0 0 1 160 192 L40 192 A20 20 0 0 1 20 172 Z" fill="url(#crust)"/>
+      <path d="M42 166 L42 108 A20 20 0 0 1 62 88 A56 56 0 0 1 138 88 A20 20 0 0 1 158 108 L158 166 A8 8 0 0 1 150 174 L50 174 A8 8 0 0 1 42 166 Z" fill="url(#crumb)"/>
+      <g fill="#C9862B" opacity="0.55">
+        <circle cx="74" cy="126" r="3.4"/>
+        <circle cx="112" cy="112" r="2.6"/>
+        <circle cx="132" cy="144" r="3"/>
+        <circle cx="88" cy="156" r="2.4"/>
+      </g>
+    </g>
+
+    <!-- copy -->
+    <g font-family="'Segoe UI', system-ui, -apple-system, Helvetica, Arial, sans-serif">
+      <text x="70" y="74" fill="#B4651C" font-size="15" font-weight="700" letter-spacing="5.5">LOÏC &#183; @LXWIQ</text>
+      <rect x="70" y="88" width="168" height="2.5" rx="1.25" fill="url(#rule)"/>
+      <text x="70" y="146" fill="#231A11" font-size="46" font-weight="700" letter-spacing="-0.6">Full-stack Developer</text>
+      <text x="70" y="200" font-size="46" font-weight="700" letter-spacing="-0.6" fill="url(#amber)">@ Baguetoast</text>
+      <text x="70" y="238" fill="#6B5847" font-size="19">Artisan game server hosting, baked fresh in France.</text>
+      <text x="70" y="268" fill="#94806C" font-size="14" letter-spacing="2.2">STRASBOURG, FR &#160;&#183;&#160; ELIXIR &#183; TYPESCRIPT &#183; SVELTE &#183; GO &#183; KOTLIN</text>
+    </g>
+
+    <!-- sheen sweep -->
+    <rect x="-420" y="-60" width="300" height="420" fill="url(#sheen)" transform="skewX(-18)">
+      <animate attributeName="x" from="-420" to="1420" dur="7s" repeatCount="indefinite"/>
+    </rect>
+
+    <rect x="1" y="1" width="1198" height="298" rx="26" fill="none" stroke="#EBD4AE" stroke-width="2"/>
+  </g>
+</svg>
