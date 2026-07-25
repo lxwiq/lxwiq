@@ -5,7 +5,10 @@
  *
  *   GITHUB_TOKEN=... node scripts/generate-cards.mjs
  *
- * Outputs assets/{stats,langs,projects}-{dark,light}.svg
+ * Cards are drawn with Primer tokens (GitHub's own design system) on a
+ * transparent background, so they read as native GitHub UI in either theme.
+ *
+ * Outputs assets/{stats,langs,projects,calendar}-{dark,light}.svg
  */
 
 import { writeFile } from 'node:fs/promises'
@@ -14,7 +17,9 @@ import { dirname, join } from 'node:path'
 
 const USER = process.env.PROFILE_USER ?? 'lxwiq'
 const TOKEN = process.env.GITHUB_TOKEN
-const FEATURED = ['JellyFish', 'AudioSort', 'palworld-wine-egg', 'soundground']
+// Public repos only — the workflow token cannot see private ones, and a link
+// to a private repo 404s for every visitor.
+const FEATURED = ['AudioSort', 'palworld-wine-egg', 'soundground', 'jellyseerr-bulk-manager']
 const OUT = join(dirname(fileURLToPath(import.meta.url)), '..', 'assets')
 
 if (!TOKEN) {
@@ -24,40 +29,37 @@ if (!TOKEN) {
 
 /* ------------------------------------------------------------------ theme */
 
+// Primer colour tokens, straight from GitHub's light/dark defaults.
 const THEMES = {
   dark: {
-    bg: ['#181209', '#0F0C08', '#090706'],
-    glow: '#F5C24B',
-    glowOpacity: [0.2, 0.05],
-    dot: '#F5C24B',
-    dotOpacity: 0.055,
-    border: '#3A2C17',
-    title: '#F5C24B',
-    value: '#F8F1E4',
-    label: '#B49E85',
-    faint: '#7C6C5A',
-    accent: '#E0862A',
-    track: '#2A2014',
-    scale: ['#1B1409', '#4A3512', '#8A6018', '#C99128', '#F5C24B'],
+    fg: '#f0f6fc',
+    muted: '#9198a1',
+    faint: '#656c76',
+    border: '#3d444d',
+    link: '#4493f8',
+    accent: '#e3b341',
+    track: '#2a3038',
+    tile: '#151b23',
+    tileOpacity: 0.5,
+    // Contribution ramp in Primer yellow — the profile's Baguetoast accent.
+    scale: ['#151b23', '#4d2d00', '#9e6a03', '#d29922', '#f2cc60'],
   },
   light: {
-    bg: ['#FFFCF5', '#FEF6E7', '#FBEBD2'],
-    glow: '#F0A62E',
-    glowOpacity: [0.18, 0.04],
-    dot: '#B4651C',
-    dotOpacity: 0.07,
-    border: '#EBD4AE',
-    title: '#B4651C',
-    value: '#231A11',
-    label: '#6B5847',
-    faint: '#94806C',
-    accent: '#C2740F',
-    track: '#F2E1C6',
-    scale: ['#F4E6CC', '#F0CE94', '#E0A03A', '#C2740F', '#8A4A0C'],
+    fg: '#1f2328',
+    muted: '#59636e',
+    faint: '#818b98',
+    border: '#d1d9e0',
+    link: '#0969da',
+    accent: '#9a6700',
+    track: '#eff2f5',
+    tile: '#f6f8fa',
+    tileOpacity: 0.7,
+    scale: ['#eff2f5', '#f8e3a1', '#e3b341', '#bb8009', '#7d4e00'],
   },
 }
 
-const FONT = "'Segoe UI', system-ui, -apple-system, Helvetica, Arial, sans-serif"
+const FONT =
+  "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif"
 
 /* ------------------------------------------------------------------- data */
 
@@ -126,6 +128,13 @@ async function fetchProfile() {
     .sort((a, b) => b.share - a.share)
     .slice(0, 8)
 
+  const projects = FEATURED.map((name) => repos.find((r) => r.name === name)).filter(Boolean)
+  for (const name of FEATURED) {
+    if (!projects.some((r) => r.name === name)) {
+      console.warn(`⚠ featured repo "${name}" not visible to this token — dropped from the card`)
+    }
+  }
+
   const c = user.contributionsCollection
   const weeks = c.contributionCalendar.weeks.map((w) => w.contributionDays)
   const days = weeks.flat()
@@ -157,22 +166,54 @@ async function fetchProfile() {
       following: user.following.totalCount,
     },
     langs,
-    projects: FEATURED.map((name) => repos.find((r) => r.name === name)).filter(Boolean),
+    projects,
   }
 }
 
-/* ------------------------------------------------------------------ svg kit */
+/* ----------------------------------------------------------------- svg kit */
 
 const esc = (s) =>
   String(s).replace(/[&<>"]/g, (ch) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[ch])
 
-/** Rough advance width in em units — good enough to wrap and truncate reliably. */
-const WIDE = new Set('ABCDEFGHKNOPQRSTUVXYZmwo@#%&'.split(''))
-const NARROW = new Set('ijlt.,:;!|\'`[]()/ '.split(''))
-function textWidth(str, size) {
-  let em = 0
-  for (const ch of str) em += WIDE.has(ch) ? 0.62 : NARROW.has(ch) ? 0.3 : 0.52
-  return em * size
+const num = (n) => n.toLocaleString('en-US')
+
+// Helvetica advance widths (AFM units, 1/1000 em). The rendered font is
+// whatever the viewer has, but Helvetica metrics track the -apple-system /
+// Segoe UI / Arial stack closely enough to wrap and truncate without clipping.
+const ADVANCE = (() => {
+  const m = {}
+  const put = (chars, w) => {
+    for (const ch of chars) m[ch] = w
+  }
+  put(' ', 278)
+  put('!', 278); put('"', 355); put('#', 556); put('$', 556); put('%', 889); put('&', 667)
+  put("'", 191); put('(', 333); put(')', 333); put('*', 389); put('+', 584); put(',', 278)
+  put('-', 333); put('.', 278); put('/', 278); put('0123456789', 556); put(':', 278)
+  put(';', 278); put('<', 584); put('=', 584); put('>', 584); put('?', 556); put('@', 1015)
+  put('A', 667); put('B', 667); put('C', 722); put('D', 722); put('E', 667); put('F', 611)
+  put('G', 778); put('H', 722); put('I', 278); put('J', 500); put('K', 667); put('L', 556)
+  put('M', 833); put('N', 722); put('O', 778); put('P', 667); put('Q', 778); put('R', 722)
+  put('S', 667); put('T', 611); put('U', 722); put('V', 667); put('W', 944); put('X', 667)
+  put('Y', 667); put('Z', 611)
+  put('[', 278); put('\\', 278); put(']', 278); put('^', 469); put('_', 556); put('`', 333)
+  put('a', 556); put('b', 556); put('c', 500); put('d', 556); put('e', 556); put('f', 278)
+  put('g', 556); put('h', 556); put('i', 222); put('j', 222); put('k', 500); put('l', 222)
+  put('m', 833); put('n', 556); put('o', 556); put('p', 556); put('q', 556); put('r', 333)
+  put('s', 500); put('t', 278); put('u', 556); put('v', 500); put('w', 722); put('x', 500)
+  put('y', 500); put('z', 500)
+  put('{', 334); put('|', 260); put('}', 334); put('~', 584)
+  return m
+})()
+
+/**
+ * Advance width in user units. `bold` covers the 600-weight text; the 1.05
+ * safety factor absorbs the difference between Helvetica metrics and the
+ * slightly wider faces the stack actually resolves to (SF Pro, Segoe UI).
+ */
+function textWidth(str, size, bold = false) {
+  let units = 0
+  for (const ch of String(str)) units += ADVANCE[ch] ?? 556
+  return (units / 1000) * size * (bold ? 1.07 : 1) * 1.05
 }
 
 function truncate(str, size, max) {
@@ -206,175 +247,168 @@ function wrap(str, size, max, maxLines) {
   return kept
 }
 
-function chrome(t, w, h, id) {
-  return `  <defs>
-    <linearGradient id="bg${id}" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="${t.bg[0]}"/>
-      <stop offset="55%" stop-color="${t.bg[1]}"/>
-      <stop offset="100%" stop-color="${t.bg[2]}"/>
-    </linearGradient>
-    <radialGradient id="glow${id}" cx="0.9" cy="0.06" r="0.85">
-      <stop offset="0%" stop-color="${t.glow}" stop-opacity="${t.glowOpacity[0]}"/>
-      <stop offset="55%" stop-color="${t.accent}" stop-opacity="${t.glowOpacity[1]}"/>
-      <stop offset="100%" stop-color="${t.accent}" stop-opacity="0"/>
-    </radialGradient>
-    <linearGradient id="rule${id}" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0%" stop-color="${t.title}" stop-opacity="0.9"/>
-      <stop offset="100%" stop-color="${t.title}" stop-opacity="0"/>
-    </linearGradient>
-    <pattern id="dots${id}" width="26" height="26" patternUnits="userSpaceOnUse">
-      <circle cx="1.4" cy="1.4" r="1.4" fill="${t.dot}" fill-opacity="${t.dotOpacity}"/>
-    </pattern>
-    <clipPath id="card${id}"><rect x="0" y="0" width="${w}" height="${h}" rx="22"/></clipPath>
-  </defs>
-  <g clip-path="url(#card${id})">
-    <rect width="${w}" height="${h}" fill="url(#bg${id})"/>
-    <rect width="${w}" height="${h}" fill="url(#dots${id})"/>
-    <rect width="${w}" height="${h}" fill="url(#glow${id})"/>`
+const svgOpen = (w, h, label) =>
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${h}" width="${w}" height="${h}" role="img" aria-label="${esc(label)}" font-family="${FONT}">`
+
+/** Transparent card with a single Primer hairline — the whole chrome. */
+const card = (t, w, h) =>
+  `  <rect x="0.5" y="0.5" width="${w - 1}" height="${h - 1}" rx="12" fill="none" stroke="${t.border}"/>`
+
+const title = (t, x, y, text) =>
+  `  <text x="${x}" y="${y}" fill="${t.fg}" font-size="15" font-weight="600">${esc(text)}</text>`
+
+const eyebrow = (t, x, y, text) =>
+  `  <text x="${x}" y="${y}" fill="${t.faint}" font-size="10.5" font-weight="600" letter-spacing="0.9">${esc(text)}</text>`
+
+// Octicons, 16×16.
+const ICONS = {
+  star: 'M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.751.751 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25Z',
+  fork: 'M5 5.372v.878c0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75v-.878a2.25 2.25 0 1 1 1.5 0v.878a2.25 2.25 0 0 1-2.25 2.25h-1.5v2.128a2.251 2.251 0 1 1-1.5 0V8.5h-1.5A2.25 2.25 0 0 1 3.5 6.25v-.878a2.25 2.25 0 1 1 1.5 0ZM5 3.25a.75.75 0 1 0-1.5 0 .75.75 0 0 0 1.5 0Zm6.75.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm-3 8.75a.75.75 0 1 0-1.5 0 .75.75 0 0 0 1.5 0Z',
+  repo: 'M2 2.5A2.5 2.5 0 0 1 4.5 0h8.75a.75.75 0 0 1 .75.75v12.5a.75.75 0 0 1-.75.75h-2.5a.75.75 0 0 1 0-1.5h1.75v-2h-8a1 1 0 0 0-.714 1.7.75.75 0 1 1-1.072 1.05A2.495 2.495 0 0 1 2 11.5Zm10.5-1h-8a1 1 0 0 0-1 1v6.708A2.486 2.486 0 0 1 4.5 9h8Z',
 }
 
-const frame = (t, w, h) =>
-  `    <rect x="1" y="1" width="${w - 2}" height="${h - 2}" rx="22" fill="none" stroke="${t.border}" stroke-width="2"/>
-  </g>`
+const icon = (name, x, y, size, fill) =>
+  `<path d="${ICONS[name]}" fill="${fill}" transform="translate(${x} ${y}) scale(${size / 16})"/>`
 
-/** Card title + the amber accent rule that ties every card back to the banner. */
-function heading(t, id, x, y, label) {
-  return `    <text x="${x}" y="${y}" fill="${t.value}" font-size="23" font-weight="700" letter-spacing="-0.3">${esc(label)}</text>
-    <rect x="${x}" y="${y + 14}" width="120" height="2.5" rx="1.25" fill="url(#rule${id})"/>`
-}
+/* -------------------------------------------------------------- stats card */
 
-const fadeIn = (delay) =>
-  `<animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="${delay}s" fill="freeze"/>`
+const STATS_W = 520
+const STATS_H = 262
 
-/* ---------------------------------------------------------------- stat card */
-
-function statsCard(t, id, stats) {
-  const W = 520
-  const H = 286
-  const items = [
-    ['Commits (last year)', stats.commits],
-    ['Public repos', stats.repos],
-    ['Pull requests', stats.prs],
-    ['Stars earned', stats.stars],
-    ['Code reviews', stats.reviews],
-    ['Followers', stats.followers],
-    ['Contributions (last year)', stats.contributions],
-    ['Following', stats.following],
+function statsCard(t, stats) {
+  const groups = [
+    [
+      'LAST 12 MONTHS',
+      [
+        ['Commits', stats.commits],
+        ['Pull requests', stats.prs],
+        ['Reviews', stats.reviews],
+        ['Contributions', stats.contributions],
+      ],
+    ],
+    [
+      'ALL TIME',
+      [
+        ['Repositories', stats.repos],
+        ['Stars earned', stats.stars],
+        ['Followers', stats.followers],
+        ['Following', stats.following],
+      ],
+    ],
   ]
 
   let body = ''
-  items.forEach(([label, value], i) => {
-    const col = i % 2
-    const row = (i - col) / 2
-    const x = 40 + col * 244
-    const y = 112 + row * 44
-    body += `
-    <g>${fadeIn(0.15 + i * 0.06)}
-      <circle cx="${x + 3}" cy="${y - 5}" r="3" fill="${t.accent}"/>
-      <text x="${x + 16}" y="${y}" fill="${t.label}" font-size="14.5">${esc(label)}</text>
-      <text x="${x + 214}" y="${y}" fill="${t.value}" font-size="17" font-weight="700" text-anchor="end">${value.toLocaleString('en-US')}</text>
-    </g>`
+  groups.forEach(([label, tiles], g) => {
+    const top = 92 + g * 88
+    body += `\n${eyebrow(t, 24, top, label)}`
+    tiles.forEach(([name, value], i) => {
+      const x = 24 + i * 118
+      body += `
+  <text x="${x}" y="${top + 34}" fill="${t.fg}" font-size="24" font-weight="600">${num(value)}</text>
+  <text x="${x}" y="${top + 54}" fill="${t.muted}" font-size="11.5">${esc(truncate(name, 11.5, 110))}</text>`
+    })
   })
 
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="GitHub statistics for ${USER}" font-family="${FONT}">
-${chrome(t, W, H, id)}
-${heading(t, id, 40, 58, 'GitHub stats')}${body}
-${frame(t, W, H)}
+  return `${svgOpen(STATS_W, STATS_H, `GitHub statistics for ${USER}`)}
+${card(t, STATS_W, STATS_H)}
+${title(t, 24, 40, 'GitHub stats')}
+  <text x="24" y="60" fill="${t.muted}" font-size="12.5">Pulled from the GitHub API, refreshed daily</text>${body}
 </svg>
 `
 }
 
-/* ---------------------------------------------------------------- lang card */
+/* --------------------------------------------------------------- langs card */
 
-function langsCard(t, id, langs) {
-  const W = 520
-  const H = 286
-  const barX = 40
-  const barW = W - 80
-  const barY = 100
+function langsCard(t, langs) {
+  const W = STATS_W
+  const H = STATS_H
+  const barX = 24
+  const barW = W - 48
+  const barY = 76
 
   let bar = ''
   let cursor = barX
-  langs.forEach((l, i) => {
+  for (const l of langs) {
     const w = Math.max((l.share / 100) * barW, 2)
     bar += `
-      <rect x="${cursor.toFixed(2)}" y="${barY}" width="${w.toFixed(2)}" height="16" fill="${l.color}">
-        <animate attributeName="width" from="0" to="${w.toFixed(2)}" dur="0.8s" begin="${(0.1 + i * 0.07).toFixed(2)}s" fill="freeze"/>
-      </rect>`
+      <rect x="${cursor.toFixed(2)}" y="${barY}" width="${w.toFixed(2)}" height="10" fill="${l.color}"/>`
     cursor += w
-  })
+  }
 
   let legend = ''
   langs.forEach((l, i) => {
     const col = i % 2
     const row = (i - col) / 2
-    const x = 40 + col * 236
-    const y = 150 + row * 32
-    const name = truncate(l.name, 14.5, 132)
+    const x = 24 + col * 240
+    const y = 122 + row * 32
     legend += `
-    <g>${fadeIn(0.3 + i * 0.06)}
-      <circle cx="${x + 5}" cy="${y - 5}" r="5.5" fill="${l.color}"/>
-      <text x="${x + 20}" y="${y}" fill="${t.label}" font-size="14.5">${esc(name)}</text>
-      <text x="${x + 200}" y="${y}" fill="${t.value}" font-size="14.5" font-weight="700" text-anchor="end">${l.share.toFixed(1)}%</text>
-    </g>`
+  <circle cx="${x + 5}" cy="${y - 4}" r="5" fill="${l.color}"/>
+  <text x="${x + 18}" y="${y}" fill="${t.fg}" font-size="12.5">${esc(truncate(l.name, 12.5, 128))}</text>
+  <text x="${x + 206}" y="${y}" fill="${t.muted}" font-size="12.5" text-anchor="end">${l.share.toFixed(1)}%</text>`
   })
 
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="Most used languages by ${USER}" font-family="${FONT}">
+  return `${svgOpen(W, H, `Most used languages by ${USER}`)}
   <defs>
-    <clipPath id="bar${id}"><rect x="${barX}" y="${barY}" width="${barW}" height="16" rx="8"/></clipPath>
+    <clipPath id="bar"><rect x="${barX}" y="${barY}" width="${barW}" height="10" rx="5"/></clipPath>
   </defs>
-${chrome(t, W, H, id)}
-${heading(t, id, 40, 58, 'Most used languages')}
-    <rect x="${barX}" y="${barY}" width="${barW}" height="16" rx="8" fill="${t.track}"/>
-    <g clip-path="url(#bar${id})">${bar}
-    </g>${legend}
-${frame(t, W, H)}
+${card(t, W, H)}
+${title(t, 24, 40, 'Most used languages')}
+  <rect x="${barX}" y="${barY}" width="${barW}" height="10" rx="5" fill="${t.track}"/>
+  <g clip-path="url(#bar)">${bar}
+  </g>${legend}
 </svg>
 `
 }
 
-/* ------------------------------------------------------------- project card */
+/* ------------------------------------------------------------ projects card */
 
-function projectsCard(t, id, projects) {
-  const W = 1060
-  const CARD_W = 500
-  const CARD_H = 152
+function projectsCard(t, projects) {
+  const TILE_W = 512
+  const TILE_H = 142
+  const GAP = 16
+  const W = TILE_W * 2 + GAP
   const rows = Math.ceil(projects.length / 2)
-  const H = 10 + rows * (CARD_H + 20)
+  const H = rows * TILE_H + (rows - 1) * GAP
 
   let body = ''
   projects.forEach((p, i) => {
     const col = i % 2
     const row = (i - col) / 2
-    const x = 30 + col * (CARD_W + 20)
-    const y = 20 + row * (CARD_H + 20)
+    const x = col * (TILE_W + GAP)
+    const y = row * (TILE_H + GAP)
+    const pad = 20
     const lang = p.primaryLanguage
-    const desc = wrap(p.description ?? '', 13.5, CARD_W - 56, 2)
-    const descLines = desc
-      .map((line, j) => `      <text x="${x + 28}" y="${y + 66 + j * 20}" fill="${t.label}" font-size="13.5">${esc(line)}</text>`)
+
+    const desc = wrap(p.description ?? '', 12.5, TILE_W - pad * 2, 2)
+      .map((line, j) => `  <text x="${x + pad}" y="${y + 74 + j * 19}" fill="${t.muted}" font-size="12.5">${esc(line)}</text>`)
       .join('\n')
 
+    // Footer runs left to right: language, stars, forks — each measured, not guessed.
+    let fx = x + pad
+    const fy = y + TILE_H - 22
+    let footer = ''
+    if (lang) {
+      footer += `\n  <circle cx="${fx + 5}" cy="${fy - 4}" r="5" fill="${lang.color ?? t.accent}"/>
+  <text x="${fx + 17}" y="${fy}" fill="${t.muted}" font-size="12">${esc(lang.name)}</text>`
+      fx += 17 + Math.round(textWidth(lang.name, 12)) + 18
+    }
+    for (const [name, value] of [
+      ['star', p.stargazerCount],
+      ['fork', p.forkCount],
+    ]) {
+      footer += `\n  ${icon(name, fx, fy - 12, 14, t.muted)}
+  <text x="${fx + 19}" y="${fy}" fill="${t.muted}" font-size="12">${num(value)}</text>`
+      fx += 19 + Math.round(textWidth(String(value), 12)) + 18
+    }
+
     body += `
-    <g>${fadeIn(0.15 + i * 0.1)}
-      <rect x="${x}" y="${y}" width="${CARD_W}" height="${CARD_H}" rx="16" fill="${t.dot}" fill-opacity="0.035" stroke="${t.border}" stroke-width="1.5"/>
-      <rect x="${x}" y="${y + 18}" width="4" height="${CARD_H - 36}" rx="2" fill="${t.accent}"/>
-      <text x="${x + 28}" y="${y + 40}" fill="${t.title}" font-size="18" font-weight="700">${esc(truncate(p.name, 18, CARD_W - 120))}</text>
-${descLines}
-      <g transform="translate(${x + 28} ${y + CARD_H - 26})">
-        ${lang ? `<circle cx="6" cy="-4.5" r="6" fill="${lang.color ?? t.accent}"/>
-        <text x="20" y="0" fill="${t.faint}" font-size="13">${esc(lang.name)}</text>` : ''}
-        <g transform="translate(${lang ? Math.round(30 + textWidth(lang.name, 13)) : 0} 0)">
-          <path d="M7 -14.5 L9 -10.4 L13.5 -9.8 L10.2 -6.6 L11 -2.1 L7 -4.2 L3 -2.1 L3.8 -6.6 L0.5 -9.8 L5 -10.4 Z" fill="${t.accent}"/>
-          <text x="20" y="0" fill="${t.faint}" font-size="13">${p.stargazerCount} stars</text>
-          <text x="${20 + Math.round(textWidth(`${p.stargazerCount} stars`, 13)) + 10}" y="0" fill="${t.faint}" font-size="13">·  ${p.forkCount} forks</text>
-        </g>
-      </g>
-    </g>`
+  <rect x="${x + 0.5}" y="${y + 0.5}" width="${TILE_W - 1}" height="${TILE_H - 1}" rx="12" fill="${t.tile}" fill-opacity="${t.tileOpacity}" stroke="${t.border}"/>
+  ${icon('repo', x + pad, y + 30, 16, t.muted)}
+  <text x="${x + pad + 24}" y="${y + 43}" fill="${t.link}" font-size="15" font-weight="600">${esc(truncate(p.name, 15, TILE_W - pad * 2 - 24))}</text>
+${desc}${footer}`
   })
 
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="Featured projects by ${USER}" font-family="${FONT}">
-${chrome(t, W, H, id)}${body}
-${frame(t, W, H)}
+  return `${svgOpen(W, H, `Featured projects by ${USER}`)}${body}
 </svg>
 `
 }
@@ -383,14 +417,13 @@ ${frame(t, W, H)}
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
-function calendarCard(t, id, cal, totalContributions) {
-  const CELL = 13
-  const GAP = 4
-  const STEP = CELL + GAP
-  const originX = 68
-  const originY = 122
-  const W = originX + cal.weeks.length * STEP + 30
-  const H = originY + 7 * STEP + 74
+function calendarCard(t, cal, totalContributions) {
+  const CELL = 14
+  const STEP = CELL + 4
+  const originX = 58
+  const originY = 92
+  const W = originX + cal.weeks.length * STEP + 24
+  const H = originY + 7 * STEP + 62
 
   const peak = Math.max(...cal.weeks.flat().map((d) => d.contributionCount), 1)
   const level = (n) => (n === 0 ? 0 : Math.min(4, 1 + Math.floor((n / peak) * 3.999)))
@@ -399,20 +432,14 @@ function calendarCard(t, id, cal, totalContributions) {
   let months = ''
   let lastMonth = -1
   cal.weeks.forEach((week, w) => {
-    const first = week[0]
-    const month = Number(first.date.slice(5, 7)) - 1
+    const month = Number(week[0].date.slice(5, 7)) - 1
     if (month !== lastMonth && w < cal.weeks.length - 2) {
-      months += `
-    <text x="${originX + w * STEP}" y="${originY - 12}" fill="${t.faint}" font-size="12">${MONTHS[month]}</text>`
+      months += `\n  <text x="${originX + w * STEP}" y="${originY - 10}" fill="${t.muted}" font-size="11">${MONTHS[month]}</text>`
       lastMonth = month
     }
     for (const day of week) {
-      const x = originX + w * STEP
-      const y = originY + day.weekday * STEP
       grid += `
-      <rect x="${x}" y="${y}" width="${CELL}" height="${CELL}" rx="3.5" fill="${t.scale[level(day.contributionCount)]}">
-        <animate attributeName="opacity" from="0" to="1" dur="0.45s" begin="${(0.1 + w * 0.012).toFixed(3)}s" fill="freeze"/>
-      </rect>`
+    <rect x="${originX + w * STEP}" y="${originY + day.weekday * STEP}" width="${CELL}" height="${CELL}" rx="3" fill="${t.scale[level(day.contributionCount)]}"/>`
     }
   })
 
@@ -423,50 +450,44 @@ function calendarCard(t, id, cal, totalContributions) {
   ]
     .map(
       ([i, label]) =>
-        `    <text x="${originX - 12}" y="${originY + i * STEP + 11}" fill="${t.faint}" font-size="11.5" text-anchor="end">${label}</text>`,
+        `  <text x="${originX - 10}" y="${originY + i * STEP + 10}" fill="${t.muted}" font-size="11" text-anchor="end">${label}</text>`,
     )
     .join('\n')
 
-  // "Less" + swatches + "More", right-aligned with the same 34px gutter as the frame.
-  const legendW = 30 + 8 + 5 * STEP + 8 + 36
-  const legendX = W - 34 - legendW
-  const legendY = originY + 7 * STEP + 30
-  const swatchX = legendX + 38
+  // Right-aligned "Less ▪▪▪▪▪ More", measured so it never clips the frame.
+  const footY = originY + 7 * STEP + 32
+  const moreX = W - 24 - Math.round(textWidth('More', 11))
+  const swatchX = moreX - 6 - 5 * STEP
+  const lessX = swatchX - 6 - Math.round(textWidth('Less', 11))
   const legend = t.scale
     .map(
       (c, i) =>
-        `      <rect x="${swatchX + i * STEP}" y="${legendY - 11}" width="${CELL}" height="${CELL}" rx="3.5" fill="${c}"/>`,
+        `  <rect x="${swatchX + i * STEP}" y="${footY - 11}" width="${CELL}" height="${CELL}" rx="3" fill="${c}"/>`,
     )
     .join('\n')
 
-  const chips = [
-    [`${totalContributions.toLocaleString('en-US')}`, 'contributions'],
-    [`${cal.currentStreak}`, 'day current streak'],
-    [`${cal.longestStreak}`, 'day longest streak'],
-  ]
-  let chipRow = ''
-  let cx = originX - 28
-  chips.forEach(([value, label], i) => {
-    chipRow += `
-    <g>${fadeIn(0.4 + i * 0.12)}
-      <text x="${cx}" y="${legendY}" fill="${t.title}" font-size="16" font-weight="700">${value}</text>
-      <text x="${cx + Math.round(textWidth(value, 16)) + 7}" y="${legendY}" fill="${t.faint}" font-size="13">${label}</text>
-    </g>`
-    cx += Math.round(textWidth(value, 16)) + 14 + Math.round(textWidth(label, 13)) + 26
-  })
+  let chips = ''
+  let cx = 24
+  for (const [value, label] of [
+    [num(cal.currentStreak), 'day streak'],
+    [num(cal.longestStreak), 'day best'],
+  ]) {
+    chips += `
+  <text x="${cx}" y="${footY}" fill="${t.fg}" font-size="12.5" font-weight="600">${value}</text>
+  <text x="${cx + Math.round(textWidth(value, 12.5, true)) + 5}" y="${footY}" fill="${t.muted}" font-size="12.5">${label}</text>`
+    cx += Math.round(textWidth(value, 12.5, true)) + 10 + Math.round(textWidth(label, 12.5)) + 22
+  }
 
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="${totalContributions} contributions by ${USER} in the last year" font-family="${FONT}">
-${chrome(t, W, H, id)}
-${heading(t, id, 40, 58, 'Contributions in the last year')}${months}
+  return `${svgOpen(W, H, `${totalContributions} contributions by ${USER} in the last year`)}
+${card(t, W, H)}
+${title(t, 24, 40, `${num(totalContributions)} contributions in the last year`)}
+  <text x="24" y="60" fill="${t.muted}" font-size="12.5">Public activity across every repository</text>${months}
 ${dayLabels}
-    <g>${grid}
-    </g>${chipRow}
-    <g>
-      <text x="${legendX}" y="${legendY}" fill="${t.faint}" font-size="12">Less</text>
+  <g>${grid}
+  </g>${chips}
 ${legend}
-      <text x="${swatchX + 5 * STEP + 4}" y="${legendY}" fill="${t.faint}" font-size="12">More</text>
-    </g>
-${frame(t, W, H)}
+  <text x="${lessX}" y="${footY}" fill="${t.muted}" font-size="11">Less</text>
+  <text x="${moreX}" y="${footY}" fill="${t.muted}" font-size="11">More</text>
 </svg>
 `
 }
@@ -476,13 +497,12 @@ ${frame(t, W, H)}
 const data = await fetchProfile()
 
 for (const [name, theme] of Object.entries(THEMES)) {
-  const id = name === 'dark' ? 'D' : 'L'
-  await writeFile(join(OUT, `stats-${name}.svg`), statsCard(theme, id, data.stats))
-  await writeFile(join(OUT, `langs-${name}.svg`), langsCard(theme, id, data.langs))
-  await writeFile(join(OUT, `projects-${name}.svg`), projectsCard(theme, id, data.projects))
+  await writeFile(join(OUT, `stats-${name}.svg`), statsCard(theme, data.stats))
+  await writeFile(join(OUT, `langs-${name}.svg`), langsCard(theme, data.langs))
+  await writeFile(join(OUT, `projects-${name}.svg`), projectsCard(theme, data.projects))
   await writeFile(
     join(OUT, `calendar-${name}.svg`),
-    calendarCard(theme, id, data.calendar, data.stats.contributions),
+    calendarCard(theme, data.calendar, data.stats.contributions),
   )
 }
 

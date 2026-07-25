@@ -1,74 +1,43 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1060 354" width="1060" height="354" role="img" aria-label="Featured projects by lxwiq" font-family="'Segoe UI', system-ui, -apple-system, Helvetica, Arial, sans-serif">
-  <defs>
-    <linearGradient id="bgL" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#FFFCF5"/>
-      <stop offset="55%" stop-color="#FEF6E7"/>
-      <stop offset="100%" stop-color="#FBEBD2"/>
-    </linearGradient>
-    <radialGradient id="glowL" cx="0.9" cy="0.06" r="0.85">
-      <stop offset="0%" stop-color="#F0A62E" stop-opacity="0.18"/>
-      <stop offset="55%" stop-color="#C2740F" stop-opacity="0.04"/>
-      <stop offset="100%" stop-color="#C2740F" stop-opacity="0"/>
-    </radialGradient>
-    <linearGradient id="ruleL" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0%" stop-color="#B4651C" stop-opacity="0.9"/>
-      <stop offset="100%" stop-color="#B4651C" stop-opacity="0"/>
-    </linearGradient>
-    <pattern id="dotsL" width="26" height="26" patternUnits="userSpaceOnUse">
-      <circle cx="1.4" cy="1.4" r="1.4" fill="#B4651C" fill-opacity="0.07"/>
-    </pattern>
-    <clipPath id="cardL"><rect x="0" y="0" width="1060" height="354" rx="22"/></clipPath>
-  </defs>
-  <g clip-path="url(#cardL)">
-    <rect width="1060" height="354" fill="url(#bgL)"/>
-    <rect width="1060" height="354" fill="url(#dotsL)"/>
-    <rect width="1060" height="354" fill="url(#glowL)"/>
-    <g><animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="0.15s" fill="freeze"/>
-      <rect x="30" y="20" width="500" height="152" rx="16" fill="#B4651C" fill-opacity="0.035" stroke="#EBD4AE" stroke-width="1.5"/>
-      <rect x="30" y="38" width="4" height="116" rx="2" fill="#C2740F"/>
-      <text x="58" y="60" fill="#B4651C" font-size="18" font-weight="700">AudioSort</text>
-      <text x="58" y="86" fill="#6B5847" font-size="13.5">Organize your audiobook collection with intelligence and automation</text>
-      <g transform="translate(58 146)">
-        <circle cx="6" cy="-4.5" r="6" fill="#00ADD8"/>
-        <text x="20" y="0" fill="#94806C" font-size="13">Go</text>
-        <g transform="translate(46 0)">
-          <path d="M7 -14.5 L9 -10.4 L13.5 -9.8 L10.2 -6.6 L11 -2.1 L7 -4.2 L3 -2.1 L3.8 -6.6 L0.5 -9.8 L5 -10.4 Z" fill="#C2740F"/>
-          <text x="20" y="0" fill="#94806C" font-size="13">6 stars</text>
-          <text x="72" y="0" fill="#94806C" font-size="13">·  0 forks</text>
-        </g>
-      </g>
-    </g>
-    <g><animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="0.25s" fill="freeze"/>
-      <rect x="550" y="20" width="500" height="152" rx="16" fill="#B4651C" fill-opacity="0.035" stroke="#EBD4AE" stroke-width="1.5"/>
-      <rect x="550" y="38" width="4" height="116" rx="2" fill="#C2740F"/>
-      <text x="578" y="60" fill="#B4651C" font-size="18" font-weight="700">palworld-wine-egg</text>
-      <text x="578" y="86" fill="#6B5847" font-size="13.5">Pelican/Pterodactyl egg running the Palworld Windows dedicated server</text>
-      <text x="578" y="106" fill="#6B5847" font-size="13.5">under Wine, so UE4SS server-side mods actually load (Proton cannot).</text>
-      <g transform="translate(578 146)">
-        
-        <g transform="translate(0 0)">
-          <path d="M7 -14.5 L9 -10.4 L13.5 -9.8 L10.2 -6.6 L11 -2.1 L7 -4.2 L3 -2.1 L3.8 -6.6 L0.5 -9.8 L5 -10.4 Z" fill="#C2740F"/>
-          <text x="20" y="0" fill="#94806C" font-size="13">0 stars</text>
-          <text x="72" y="0" fill="#94806C" font-size="13">·  0 forks</text>
-        </g>
-      </g>
-    </g>
-    <g><animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="0.35s" fill="freeze"/>
-      <rect x="30" y="192" width="500" height="152" rx="16" fill="#B4651C" fill-opacity="0.035" stroke="#EBD4AE" stroke-width="1.5"/>
-      <rect x="30" y="210" width="4" height="116" rx="2" fill="#C2740F"/>
-      <text x="58" y="232" fill="#B4651C" font-size="18" font-weight="700">soundground</text>
-      <text x="58" y="258" fill="#6B5847" font-size="13.5">SoundGround is a sleek web application enabling users to effortlessly</text>
-      <text x="58" y="278" fill="#6B5847" font-size="13.5">download and stream music directly from YouTube and SoundCloud. Di…</text>
-      <g transform="translate(58 318)">
-        <circle cx="6" cy="-4.5" r="6" fill="#f1e05a"/>
-        <text x="20" y="0" fill="#94806C" font-size="13">JavaScript</text>
-        <g transform="translate(93 0)">
-          <path d="M7 -14.5 L9 -10.4 L13.5 -9.8 L10.2 -6.6 L11 -2.1 L7 -4.2 L3 -2.1 L3.8 -6.6 L0.5 -9.8 L5 -10.4 Z" fill="#C2740F"/>
-          <text x="20" y="0" fill="#94806C" font-size="13">2 stars</text>
-          <text x="72" y="0" fill="#94806C" font-size="13">·  0 forks</text>
-        </g>
-      </g>
-    </g>
-    <rect x="1" y="1" width="1058" height="352" rx="22" fill="none" stroke="#EBD4AE" stroke-width="2"/>
-  </g>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1040 300" width="1040" height="300" role="img" aria-label="Featured projects by lxwiq" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif">
+  <rect x="0.5" y="0.5" width="511" height="141" rx="12" fill="#f6f8fa" fill-opacity="0.7" stroke="#d1d9e0"/>
+  <path d="M2 2.5A2.5 2.5 0 0 1 4.5 0h8.75a.75.75 0 0 1 .75.75v12.5a.75.75 0 0 1-.75.75h-2.5a.75.75 0 0 1 0-1.5h1.75v-2h-8a1 1 0 0 0-.714 1.7.75.75 0 1 1-1.072 1.05A2.495 2.495 0 0 1 2 11.5Zm10.5-1h-8a1 1 0 0 0-1 1v6.708A2.486 2.486 0 0 1 4.5 9h8Z" fill="#59636e" transform="translate(20 30) scale(1)"/>
+  <text x="44" y="43" fill="#0969da" font-size="15" font-weight="600">AudioSort</text>
+  <text x="20" y="74" fill="#59636e" font-size="12.5">Organize your audiobook collection with intelligence and automation</text>
+  <circle cx="25" cy="116" r="5" fill="#00ADD8"/>
+  <text x="37" y="120" fill="#59636e" font-size="12">Go</text>
+  <path d="M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.751.751 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25Z" fill="#59636e" transform="translate(72 108) scale(0.875)"/>
+  <text x="91" y="120" fill="#59636e" font-size="12">6</text>
+  <path d="M5 5.372v.878c0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75v-.878a2.25 2.25 0 1 1 1.5 0v.878a2.25 2.25 0 0 1-2.25 2.25h-1.5v2.128a2.251 2.251 0 1 1-1.5 0V8.5h-1.5A2.25 2.25 0 0 1 3.5 6.25v-.878a2.25 2.25 0 1 1 1.5 0ZM5 3.25a.75.75 0 1 0-1.5 0 .75.75 0 0 0 1.5 0Zm6.75.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm-3 8.75a.75.75 0 1 0-1.5 0 .75.75 0 0 0 1.5 0Z" fill="#59636e" transform="translate(116 108) scale(0.875)"/>
+  <text x="135" y="120" fill="#59636e" font-size="12">0</text>
+  <rect x="528.5" y="0.5" width="511" height="141" rx="12" fill="#f6f8fa" fill-opacity="0.7" stroke="#d1d9e0"/>
+  <path d="M2 2.5A2.5 2.5 0 0 1 4.5 0h8.75a.75.75 0 0 1 .75.75v12.5a.75.75 0 0 1-.75.75h-2.5a.75.75 0 0 1 0-1.5h1.75v-2h-8a1 1 0 0 0-.714 1.7.75.75 0 1 1-1.072 1.05A2.495 2.495 0 0 1 2 11.5Zm10.5-1h-8a1 1 0 0 0-1 1v6.708A2.486 2.486 0 0 1 4.5 9h8Z" fill="#59636e" transform="translate(548 30) scale(1)"/>
+  <text x="572" y="43" fill="#0969da" font-size="15" font-weight="600">palworld-wine-egg</text>
+  <text x="548" y="74" fill="#59636e" font-size="12.5">Pelican/Pterodactyl egg running the Palworld Windows dedicated server under</text>
+  <text x="548" y="93" fill="#59636e" font-size="12.5">Wine, so UE4SS server-side mods actually load (Proton cannot).</text>
+  <path d="M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.751.751 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25Z" fill="#59636e" transform="translate(548 108) scale(0.875)"/>
+  <text x="567" y="120" fill="#59636e" font-size="12">0</text>
+  <path d="M5 5.372v.878c0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75v-.878a2.25 2.25 0 1 1 1.5 0v.878a2.25 2.25 0 0 1-2.25 2.25h-1.5v2.128a2.251 2.251 0 1 1-1.5 0V8.5h-1.5A2.25 2.25 0 0 1 3.5 6.25v-.878a2.25 2.25 0 1 1 1.5 0ZM5 3.25a.75.75 0 1 0-1.5 0 .75.75 0 0 0 1.5 0Zm6.75.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm-3 8.75a.75.75 0 1 0-1.5 0 .75.75 0 0 0 1.5 0Z" fill="#59636e" transform="translate(592 108) scale(0.875)"/>
+  <text x="611" y="120" fill="#59636e" font-size="12">0</text>
+  <rect x="0.5" y="158.5" width="511" height="141" rx="12" fill="#f6f8fa" fill-opacity="0.7" stroke="#d1d9e0"/>
+  <path d="M2 2.5A2.5 2.5 0 0 1 4.5 0h8.75a.75.75 0 0 1 .75.75v12.5a.75.75 0 0 1-.75.75h-2.5a.75.75 0 0 1 0-1.5h1.75v-2h-8a1 1 0 0 0-.714 1.7.75.75 0 1 1-1.072 1.05A2.495 2.495 0 0 1 2 11.5Zm10.5-1h-8a1 1 0 0 0-1 1v6.708A2.486 2.486 0 0 1 4.5 9h8Z" fill="#59636e" transform="translate(20 188) scale(1)"/>
+  <text x="44" y="201" fill="#0969da" font-size="15" font-weight="600">soundground</text>
+  <text x="20" y="232" fill="#59636e" font-size="12.5">SoundGround is a sleek web application enabling users to effortlessly download</text>
+  <text x="20" y="251" fill="#59636e" font-size="12.5">and stream music directly from YouTube and SoundCloud. Dive into a seamles…</text>
+  <circle cx="25" cy="274" r="5" fill="#f1e05a"/>
+  <text x="37" y="278" fill="#59636e" font-size="12">JavaScript</text>
+  <path d="M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.751.751 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25Z" fill="#59636e" transform="translate(114 266) scale(0.875)"/>
+  <text x="133" y="278" fill="#59636e" font-size="12">2</text>
+  <path d="M5 5.372v.878c0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75v-.878a2.25 2.25 0 1 1 1.5 0v.878a2.25 2.25 0 0 1-2.25 2.25h-1.5v2.128a2.251 2.251 0 1 1-1.5 0V8.5h-1.5A2.25 2.25 0 0 1 3.5 6.25v-.878a2.25 2.25 0 1 1 1.5 0ZM5 3.25a.75.75 0 1 0-1.5 0 .75.75 0 0 0 1.5 0Zm6.75.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm-3 8.75a.75.75 0 1 0-1.5 0 .75.75 0 0 0 1.5 0Z" fill="#59636e" transform="translate(158 266) scale(0.875)"/>
+  <text x="177" y="278" fill="#59636e" font-size="12">0</text>
+  <rect x="528.5" y="158.5" width="511" height="141" rx="12" fill="#f6f8fa" fill-opacity="0.7" stroke="#d1d9e0"/>
+  <path d="M2 2.5A2.5 2.5 0 0 1 4.5 0h8.75a.75.75 0 0 1 .75.75v12.5a.75.75 0 0 1-.75.75h-2.5a.75.75 0 0 1 0-1.5h1.75v-2h-8a1 1 0 0 0-.714 1.7.75.75 0 1 1-1.072 1.05A2.495 2.495 0 0 1 2 11.5Zm10.5-1h-8a1 1 0 0 0-1 1v6.708A2.486 2.486 0 0 1 4.5 9h8Z" fill="#59636e" transform="translate(548 188) scale(1)"/>
+  <text x="572" y="201" fill="#0969da" font-size="15" font-weight="600">jellyseerr-bulk-manager</text>
+  <text x="548" y="232" fill="#59636e" font-size="12.5">Tampermonkey userscript that adds bulk request management to</text>
+  <text x="548" y="251" fill="#59636e" font-size="12.5">Jellyseerr/Overseerr — filter, select, and mass-delete requests with a single click…</text>
+  <circle cx="553" cy="274" r="5" fill="#f1e05a"/>
+  <text x="565" y="278" fill="#59636e" font-size="12">JavaScript</text>
+  <path d="M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.751.751 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25Z" fill="#59636e" transform="translate(642 266) scale(0.875)"/>
+  <text x="661" y="278" fill="#59636e" font-size="12">0</text>
+  <path d="M5 5.372v.878c0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75v-.878a2.25 2.25 0 1 1 1.5 0v.878a2.25 2.25 0 0 1-2.25 2.25h-1.5v2.128a2.251 2.251 0 1 1-1.5 0V8.5h-1.5A2.25 2.25 0 0 1 3.5 6.25v-.878a2.25 2.25 0 1 1 1.5 0ZM5 3.25a.75.75 0 1 0-1.5 0 .75.75 0 0 0 1.5 0Zm6.75.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm-3 8.75a.75.75 0 1 0-1.5 0 .75.75 0 0 0 1.5 0Z" fill="#59636e" transform="translate(686 266) scale(0.875)"/>
+  <text x="705" y="278" fill="#59636e" font-size="12">0</text>
 </svg>
