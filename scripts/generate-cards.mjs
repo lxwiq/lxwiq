@@ -289,7 +289,7 @@ function statsCard(t, stats) {
     [
       'ALL TIME',
       [
-        ['Repositories', stats.repos],
+        ['Public repos', stats.repos],
         ['Stars earned', stats.stars],
         ['Followers', stats.followers],
         ['Following', stats.following],
@@ -312,7 +312,7 @@ function statsCard(t, stats) {
   return `${svgOpen(STATS_W, STATS_H, `GitHub statistics for ${USER}`)}
 ${card(t, STATS_W, STATS_H)}
 ${title(t, 24, 40, 'GitHub stats')}
-  <text x="24" y="60" fill="${t.muted}" font-size="12.5">Pulled from the GitHub API, refreshed daily</text>${body}
+  <text x="24" y="60" fill="${t.muted}" font-size="12.5">Public activity, refreshed daily from the GitHub API</text>${body}
 </svg>
 `
 }
