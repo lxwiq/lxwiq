@@ -7,6 +7,10 @@ on:
   push:
     branches:
       - main
+    # Only on its own changes — otherwise every bot commit from cards.yml
+    # would re-run it for nothing.
+    paths:
+      - .github/workflows/snake.yml
 
 jobs:
   generate:
