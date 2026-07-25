@@ -28,17 +28,17 @@
     <g><animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="0.15s" fill="freeze"/>
       <circle cx="43" cy="107" r="3" fill="#E0862A"/>
       <text x="56" y="112" fill="#B49E85" font-size="14.5">Commits (last year)</text>
-      <text x="254" y="112" fill="#F8F1E4" font-size="17" font-weight="700" text-anchor="end">160</text>
+      <text x="254" y="112" fill="#F8F1E4" font-size="17" font-weight="700" text-anchor="end">161</text>
     </g>
     <g><animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="0.21s" fill="freeze"/>
       <circle cx="287" cy="107" r="3" fill="#E0862A"/>
       <text x="300" y="112" fill="#B49E85" font-size="14.5">Public repos</text>
-      <text x="498" y="112" fill="#F8F1E4" font-size="17" font-weight="700" text-anchor="end">39</text>
+      <text x="498" y="112" fill="#F8F1E4" font-size="17" font-weight="700" text-anchor="end">28</text>
     </g>
     <g><animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="0.27s" fill="freeze"/>
       <circle cx="43" cy="151" r="3" fill="#E0862A"/>
       <text x="56" y="156" fill="#B49E85" font-size="14.5">Pull requests</text>
-      <text x="254" y="156" fill="#F8F1E4" font-size="17" font-weight="700" text-anchor="end">23</text>
+      <text x="254" y="156" fill="#F8F1E4" font-size="17" font-weight="700" text-anchor="end">17</text>
     </g>
     <g><animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="0.32999999999999996s" fill="freeze"/>
       <circle cx="287" cy="151" r="3" fill="#E0862A"/>
@@ -58,7 +58,7 @@
     <g><animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="0.51s" fill="freeze"/>
       <circle cx="43" cy="239" r="3" fill="#E0862A"/>
       <text x="56" y="244" fill="#B49E85" font-size="14.5">Contributions (last year)</text>
-      <text x="254" y="244" fill="#F8F1E4" font-size="17" font-weight="700" text-anchor="end">167</text>
+      <text x="254" y="244" fill="#F8F1E4" font-size="17" font-weight="700" text-anchor="end">169</text>
     </g>
     <g><animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="0.57s" fill="freeze"/>
       <circle cx="287" cy="239" r="3" fill="#E0862A"/>

@@ -30,70 +30,70 @@
     <rect x="40" y="72" width="120" height="2.5" rx="1.25" fill="url(#ruleL)"/>
     <rect x="40" y="100" width="440" height="16" rx="8" fill="#F2E1C6"/>
     <g clip-path="url(#barL)">
-      <rect x="40.00" y="100" width="151.66" height="16" fill="#00B4AB">
-        <animate attributeName="width" from="0" to="151.66" dur="0.8s" begin="0.10s" fill="freeze"/>
+      <rect x="40.00" y="100" width="232.25" height="16" fill="#00B4AB">
+        <animate attributeName="width" from="0" to="232.25" dur="0.8s" begin="0.10s" fill="freeze"/>
       </rect>
-      <rect x="191.66" y="100" width="60.46" height="16" fill="#6e4a7e">
-        <animate attributeName="width" from="0" to="60.46" dur="0.8s" begin="0.17s" fill="freeze"/>
+      <rect x="272.25" y="100" width="70.23" height="16" fill="#012456">
+        <animate attributeName="width" from="0" to="70.23" dur="0.8s" begin="0.17s" fill="freeze"/>
       </rect>
-      <rect x="252.13" y="100" width="49.59" height="16" fill="#f1e05a">
-        <animate attributeName="width" from="0" to="49.59" dur="0.8s" begin="0.24s" fill="freeze"/>
+      <rect x="342.47" y="100" width="43.11" height="16" fill="#f1e05a">
+        <animate attributeName="width" from="0" to="43.11" dur="0.8s" begin="0.24s" fill="freeze"/>
       </rect>
-      <rect x="301.71" y="100" width="38.65" height="16" fill="#A97BFF">
-        <animate attributeName="width" from="0" to="38.65" dur="0.8s" begin="0.31s" fill="freeze"/>
+      <rect x="385.59" y="100" width="29.37" height="16" fill="#3178c6">
+        <animate attributeName="width" from="0" to="29.37" dur="0.8s" begin="0.31s" fill="freeze"/>
       </rect>
-      <rect x="340.37" y="100" width="36.28" height="16" fill="#012456">
-        <animate attributeName="width" from="0" to="36.28" dur="0.8s" begin="0.38s" fill="freeze"/>
+      <rect x="414.96" y="100" width="25.32" height="16" fill="#e34c26">
+        <animate attributeName="width" from="0" to="25.32" dur="0.8s" begin="0.38s" fill="freeze"/>
       </rect>
-      <rect x="376.65" y="100" width="29.62" height="16" fill="#3178c6">
-        <animate attributeName="width" from="0" to="29.62" dur="0.8s" begin="0.45s" fill="freeze"/>
+      <rect x="440.28" y="100" width="12.50" height="16" fill="#00ADD8">
+        <animate attributeName="width" from="0" to="12.50" dur="0.8s" begin="0.45s" fill="freeze"/>
       </rect>
-      <rect x="406.27" y="100" width="28.23" height="16" fill="#e34c26">
-        <animate attributeName="width" from="0" to="28.23" dur="0.8s" begin="0.52s" fill="freeze"/>
+      <rect x="452.78" y="100" width="5.66" height="16" fill="#3572A5">
+        <animate attributeName="width" from="0" to="5.66" dur="0.8s" begin="0.52s" fill="freeze"/>
       </rect>
-      <rect x="434.49" y="100" width="9.61" height="16" fill="#ff3e00">
-        <animate attributeName="width" from="0" to="9.61" dur="0.8s" begin="0.59s" fill="freeze"/>
+      <rect x="458.44" y="100" width="4.50" height="16" fill="#ff3e00">
+        <animate attributeName="width" from="0" to="4.50" dur="0.8s" begin="0.59s" fill="freeze"/>
       </rect>
     </g>
     <g><animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="0.3s" fill="freeze"/>
       <circle cx="45" cy="145" r="5.5" fill="#00B4AB"/>
       <text x="60" y="150" fill="#6B5847" font-size="14.5">Dart</text>
-      <text x="240" y="150" fill="#231A11" font-size="14.5" font-weight="700" text-anchor="end">34.5%</text>
+      <text x="240" y="150" fill="#231A11" font-size="14.5" font-weight="700" text-anchor="end">52.8%</text>
     </g>
     <g><animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="0.36s" fill="freeze"/>
-      <circle cx="281" cy="145" r="5.5" fill="#6e4a7e"/>
-      <text x="296" y="150" fill="#6B5847" font-size="14.5">Elixir</text>
-      <text x="476" y="150" fill="#231A11" font-size="14.5" font-weight="700" text-anchor="end">13.7%</text>
+      <circle cx="281" cy="145" r="5.5" fill="#012456"/>
+      <text x="296" y="150" fill="#6B5847" font-size="14.5">PowerShell</text>
+      <text x="476" y="150" fill="#231A11" font-size="14.5" font-weight="700" text-anchor="end">16.0%</text>
     </g>
     <g><animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="0.42s" fill="freeze"/>
       <circle cx="45" cy="177" r="5.5" fill="#f1e05a"/>
       <text x="60" y="182" fill="#6B5847" font-size="14.5">JavaScript</text>
-      <text x="240" y="182" fill="#231A11" font-size="14.5" font-weight="700" text-anchor="end">11.3%</text>
+      <text x="240" y="182" fill="#231A11" font-size="14.5" font-weight="700" text-anchor="end">9.8%</text>
     </g>
     <g><animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="0.48s" fill="freeze"/>
-      <circle cx="281" cy="177" r="5.5" fill="#A97BFF"/>
-      <text x="296" y="182" fill="#6B5847" font-size="14.5">Kotlin</text>
-      <text x="476" y="182" fill="#231A11" font-size="14.5" font-weight="700" text-anchor="end">8.8%</text>
+      <circle cx="281" cy="177" r="5.5" fill="#3178c6"/>
+      <text x="296" y="182" fill="#6B5847" font-size="14.5">TypeScript</text>
+      <text x="476" y="182" fill="#231A11" font-size="14.5" font-weight="700" text-anchor="end">6.7%</text>
     </g>
     <g><animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="0.54s" fill="freeze"/>
-      <circle cx="45" cy="209" r="5.5" fill="#012456"/>
-      <text x="60" y="214" fill="#6B5847" font-size="14.5">PowerShell</text>
-      <text x="240" y="214" fill="#231A11" font-size="14.5" font-weight="700" text-anchor="end">8.2%</text>
+      <circle cx="45" cy="209" r="5.5" fill="#e34c26"/>
+      <text x="60" y="214" fill="#6B5847" font-size="14.5">HTML</text>
+      <text x="240" y="214" fill="#231A11" font-size="14.5" font-weight="700" text-anchor="end">5.8%</text>
     </g>
     <g><animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="0.6s" fill="freeze"/>
-      <circle cx="281" cy="209" r="5.5" fill="#3178c6"/>
-      <text x="296" y="214" fill="#6B5847" font-size="14.5">TypeScript</text>
-      <text x="476" y="214" fill="#231A11" font-size="14.5" font-weight="700" text-anchor="end">6.7%</text>
+      <circle cx="281" cy="209" r="5.5" fill="#00ADD8"/>
+      <text x="296" y="214" fill="#6B5847" font-size="14.5">Go</text>
+      <text x="476" y="214" fill="#231A11" font-size="14.5" font-weight="700" text-anchor="end">2.8%</text>
     </g>
     <g><animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="0.6599999999999999s" fill="freeze"/>
-      <circle cx="45" cy="241" r="5.5" fill="#e34c26"/>
-      <text x="60" y="246" fill="#6B5847" font-size="14.5">HTML</text>
-      <text x="240" y="246" fill="#231A11" font-size="14.5" font-weight="700" text-anchor="end">6.4%</text>
+      <circle cx="45" cy="241" r="5.5" fill="#3572A5"/>
+      <text x="60" y="246" fill="#6B5847" font-size="14.5">Python</text>
+      <text x="240" y="246" fill="#231A11" font-size="14.5" font-weight="700" text-anchor="end">1.3%</text>
     </g>
     <g><animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="0.72s" fill="freeze"/>
       <circle cx="281" cy="241" r="5.5" fill="#ff3e00"/>
       <text x="296" y="246" fill="#6B5847" font-size="14.5">Svelte</text>
-      <text x="476" y="246" fill="#231A11" font-size="14.5" font-weight="700" text-anchor="end">2.2%</text>
+      <text x="476" y="246" fill="#231A11" font-size="14.5" font-weight="700" text-anchor="end">1.0%</text>
     </g>
     <rect x="1" y="1" width="518" height="284" rx="22" fill="none" stroke="#EBD4AE" stroke-width="2"/>
   </g>
