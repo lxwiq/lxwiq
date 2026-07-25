@@ -6,37 +6,37 @@
   <text x="24" y="40" fill="#1f2328" font-size="15" font-weight="600">Most used languages</text>
   <rect x="24" y="76" width="472" height="10" rx="5" fill="#eff2f5"/>
   <g clip-path="url(#bar)">
-      <rect x="24.00" y="76" width="162.44" height="10" fill="#00B4AB"/>
-      <rect x="186.44" y="76" width="64.76" height="10" fill="#6e4a7e"/>
-      <rect x="251.20" y="76" width="53.85" height="10" fill="#f1e05a"/>
-      <rect x="305.05" y="76" width="41.40" height="10" fill="#A97BFF"/>
-      <rect x="346.45" y="76" width="38.86" height="10" fill="#012456"/>
-      <rect x="385.30" y="76" width="31.72" height="10" fill="#3178c6"/>
-      <rect x="417.03" y="76" width="30.23" height="10" fill="#e34c26"/>
-      <rect x="447.26" y="76" width="10.30" height="10" fill="#ff3e00"/>
+      <rect x="24.00" y="76" width="248.99" height="10" fill="#00B4AB"/>
+      <rect x="272.99" y="76" width="75.29" height="10" fill="#012456"/>
+      <rect x="348.27" y="76" width="46.51" height="10" fill="#f1e05a"/>
+      <rect x="394.78" y="76" width="31.49" height="10" fill="#3178c6"/>
+      <rect x="426.27" y="76" width="27.15" height="10" fill="#e34c26"/>
+      <rect x="453.42" y="76" width="13.40" height="10" fill="#00ADD8"/>
+      <rect x="466.82" y="76" width="6.06" height="10" fill="#3572A5"/>
+      <rect x="472.88" y="76" width="4.82" height="10" fill="#ff3e00"/>
   </g>
   <circle cx="29" cy="118" r="5" fill="#00B4AB"/>
   <text x="42" y="122" fill="#1f2328" font-size="12.5">Dart</text>
-  <text x="230" y="122" fill="#59636e" font-size="12.5" text-anchor="end">34.4%</text>
-  <circle cx="269" cy="118" r="5" fill="#6e4a7e"/>
-  <text x="282" y="122" fill="#1f2328" font-size="12.5">Elixir</text>
-  <text x="470" y="122" fill="#59636e" font-size="12.5" text-anchor="end">13.7%</text>
+  <text x="230" y="122" fill="#59636e" font-size="12.5" text-anchor="end">52.8%</text>
+  <circle cx="269" cy="118" r="5" fill="#012456"/>
+  <text x="282" y="122" fill="#1f2328" font-size="12.5">PowerShell</text>
+  <text x="470" y="122" fill="#59636e" font-size="12.5" text-anchor="end">16.0%</text>
   <circle cx="29" cy="150" r="5" fill="#f1e05a"/>
   <text x="42" y="154" fill="#1f2328" font-size="12.5">JavaScript</text>
-  <text x="230" y="154" fill="#59636e" font-size="12.5" text-anchor="end">11.4%</text>
-  <circle cx="269" cy="150" r="5" fill="#A97BFF"/>
-  <text x="282" y="154" fill="#1f2328" font-size="12.5">Kotlin</text>
-  <text x="470" y="154" fill="#59636e" font-size="12.5" text-anchor="end">8.8%</text>
-  <circle cx="29" cy="182" r="5" fill="#012456"/>
-  <text x="42" y="186" fill="#1f2328" font-size="12.5">PowerShell</text>
-  <text x="230" y="186" fill="#59636e" font-size="12.5" text-anchor="end">8.2%</text>
-  <circle cx="269" cy="182" r="5" fill="#3178c6"/>
-  <text x="282" y="186" fill="#1f2328" font-size="12.5">TypeScript</text>
-  <text x="470" y="186" fill="#59636e" font-size="12.5" text-anchor="end">6.7%</text>
-  <circle cx="29" cy="214" r="5" fill="#e34c26"/>
-  <text x="42" y="218" fill="#1f2328" font-size="12.5">HTML</text>
-  <text x="230" y="218" fill="#59636e" font-size="12.5" text-anchor="end">6.4%</text>
+  <text x="230" y="154" fill="#59636e" font-size="12.5" text-anchor="end">9.9%</text>
+  <circle cx="269" cy="150" r="5" fill="#3178c6"/>
+  <text x="282" y="154" fill="#1f2328" font-size="12.5">TypeScript</text>
+  <text x="470" y="154" fill="#59636e" font-size="12.5" text-anchor="end">6.7%</text>
+  <circle cx="29" cy="182" r="5" fill="#e34c26"/>
+  <text x="42" y="186" fill="#1f2328" font-size="12.5">HTML</text>
+  <text x="230" y="186" fill="#59636e" font-size="12.5" text-anchor="end">5.8%</text>
+  <circle cx="269" cy="182" r="5" fill="#00ADD8"/>
+  <text x="282" y="186" fill="#1f2328" font-size="12.5">Go</text>
+  <text x="470" y="186" fill="#59636e" font-size="12.5" text-anchor="end">2.8%</text>
+  <circle cx="29" cy="214" r="5" fill="#3572A5"/>
+  <text x="42" y="218" fill="#1f2328" font-size="12.5">Python</text>
+  <text x="230" y="218" fill="#59636e" font-size="12.5" text-anchor="end">1.3%</text>
   <circle cx="269" cy="214" r="5" fill="#ff3e00"/>
   <text x="282" y="218" fill="#1f2328" font-size="12.5">Svelte</text>
-  <text x="470" y="218" fill="#59636e" font-size="12.5" text-anchor="end">2.2%</text>
+  <text x="470" y="218" fill="#59636e" font-size="12.5" text-anchor="end">1.0%</text>
 </svg>
