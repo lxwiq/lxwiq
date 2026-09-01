@@ -385,6 +385,7 @@
     <rect x="976" y="200" width="14" height="14" rx="3" fill="#151b23"/>
     <rect x="994" y="92" width="14" height="14" rx="3" fill="#151b23"/>
     <rect x="994" y="110" width="14" height="14" rx="3" fill="#151b23"/>
+    <rect x="994" y="128" width="14" height="14" rx="3" fill="#151b23"/>
   </g>
   <text x="24" y="250" fill="#f0f6fc" font-size="12.5" font-weight="600">0</text>
   <text x="37" y="250" fill="#9198a1" font-size="12.5">day streak</text>
