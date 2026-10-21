@@ -1,27 +1,20 @@
 <p>
-  <img alt="lxwiq" src="./assets/header.svg" width="100%">
+  <img alt="lxwiq — full-stack developer, Strasbourg. An ASCII portrait in the snow." src="./assets/header.svg" width="100%">
+  <img alt="I build Baguetoast, game server hosting made in France, from the Elixir control plane down to the bare-metal nodes. On the side, I write self-hosting tools I actually use. Now: the new Baguetoast dashboard. Stack: Elixir, Phoenix, TypeScript, Svelte, Go, Kotlin, PostgreSQL, Docker. Side projects: AudioSort, palworld-wine-egg, jellyseerr-bulk-manager, ktc-edit." src="./assets/about.svg" width="100%">
+  <img alt="Public contributions over the last twelve months" src="./assets/calendar.svg" width="100%">
 </p>
 
-I build [Baguetoast](https://baguetoast.com), game server hosting made in France — from the Elixir control plane down to the bare-metal nodes. On the side, I write self-hosting tools I actually use.
-
-**Currently** working on the new Baguetoast dashboard.
-
-**Stack** — Elixir, Phoenix, TypeScript, Svelte, Go, Kotlin, PostgreSQL, Docker.
-
-**Side projects**
-
-- [AudioSort](https://github.com/lxwiq/AudioSort) — organises audiobook collections
-- [palworld-wine-egg](https://github.com/lxwiq/palworld-wine-egg) — Palworld's Windows server under Wine, so mods load
-- [jellyseerr-bulk-manager](https://github.com/lxwiq/jellyseerr-bulk-manager) — bulk request management for Jellyseerr
-- [ktc-edit](https://github.com/lxwiq/ktc-edit) — Kingdom Two Crowns save editor in the browser
-
-<br>
-<p>
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="./assets/calendar-dark.svg">
-  <source media="(prefers-color-scheme: light)" srcset="./assets/calendar-light.svg">
-  <img alt="Public contributions over the last twelve months" src="./assets/calendar-dark.svg" width="100%">
-</picture>
+<p align="center">
+  <sub>
+    <a href="https://github.com/lxwiq/AudioSort">audiosort</a> ·
+    <a href="https://github.com/lxwiq/palworld-wine-egg">palworld-wine-egg</a> ·
+    <a href="https://github.com/lxwiq/jellyseerr-bulk-manager">jellyseerr-bulk-manager</a> ·
+    <a href="https://github.com/lxwiq/ktc-edit">ktc-edit</a>
+  </sub>
 </p>
-
-[baguetoast.com](https://baguetoast.com) · [loic.aviez91@gmail.com](mailto:loic.aviez91@gmail.com)
+<p align="center">
+  <sub>
+    <a href="https://baguetoast.com">baguetoast.com</a> ·
+    <a href="mailto:loic.aviez91@gmail.com">loic.aviez91@gmail.com</a>
+  </sub>
+</p>

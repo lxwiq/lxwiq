@@ -9,6 +9,7 @@ on:
       - main
     paths:
       - scripts/generate-cards.mjs
+      - scripts/ascii.mjs
       - .github/workflows/cards.yml
 
 concurrency:

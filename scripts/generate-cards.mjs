@@ -5,50 +5,32 @@
  *
  *   GITHUB_TOKEN=... node scripts/generate-cards.mjs
  *
- * Drawn in the same greys and type as the banner (scripts/generate-header.mjs):
- * Instrument Serif for the headline, the system monospace for every label.
+ * Drawn like the other panels (scripts/ascii.mjs): ASCII on black, under
+ * falling snow, each day a glyph that settles heavier as activity grows.
  *
- * Outputs assets/calendar-{dark,light}.svg
+ * Outputs assets/calendar.svg
  */
 
-import { readFile, writeFile } from 'node:fs/promises'
-import { fileURLToPath } from 'node:url'
-import { dirname, join } from 'node:path'
+import { writeFile } from 'node:fs/promises'
+import { join } from 'node:path'
+import { ADVANCE, ASSETS, INK, esc, panel } from './ascii.mjs'
 
 const USER = process.env.PROFILE_USER ?? 'lxwiq'
 const TOKEN = process.env.GITHUB_TOKEN
-const ASSETS = join(dirname(fileURLToPath(import.meta.url)), '..', 'assets')
 
 if (!TOKEN) {
   console.error('GITHUB_TOKEN is required')
   process.exit(1)
 }
 
-/* ------------------------------------------------------------------ theme */
-
-const THEMES = {
-  dark: {
-    bg: '#0a0a0a',
-    fg: '#ececec',
-    muted: '#8f8f8f',
-    faint: '#5c5c5c',
-    border: '#2b2b2b',
-    // Empty ground to fresh snow.
-    scale: ['#1a1a1a', '#3d3d3d', '#6e6e6e', '#a6a6a6', '#ececec'],
-  },
-  light: {
-    bg: '#f5f5f3',
-    fg: '#141414',
-    muted: '#6a6a6a',
-    faint: '#9a9a9a',
-    border: '#d4d4d4',
-    scale: ['#e6e6e3', '#c4c4c1', '#949492', '#5c5c5b', '#1c1c1c'],
-  },
-}
-
-const SERIF = (await readFile(join(ASSETS, 'fonts', 'instrument-serif.woff2'))).toString('base64')
-const SERIF_STACK = "'Instrument Serif', 'Iowan Old Style', Georgia, serif"
-const MONO_STACK = "ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace"
+// No contributions to the busiest days.
+const LEVELS = [
+  ['.', 0.3],
+  [':', 0.5],
+  ['+', 0.7],
+  ['*', 0.85],
+  ['#', 1],
+]
 
 /* ------------------------------------------------------------------- data */
 
@@ -103,31 +85,20 @@ async function fetchCalendar() {
   return { weeks, total: calendar.totalContributions, longestStreak: longest, currentStreak: current }
 }
 
-/* ----------------------------------------------------------------- svg kit */
-
-const esc = (s) =>
-  String(s).replace(/[&<>"]/g, (ch) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[ch])
+/* ------------------------------------------------------------ calendar card */
 
 const num = (n) => n.toLocaleString('en-US')
 
-// Every monospace face in the stack advances 0.6em or a hair less, so this
-// never undershoots: labels can be right-aligned without clipping the frame.
-const monoWidth = (str, size, spacing = 0) => String(str).length * (size * 0.6 + spacing)
+const MONTHS = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec']
 
-const label = (t, x, y, text, { fill = t.faint, size = 13, spacing = 1.6, anchor = 'start' } = {}) =>
-  `  <text x="${x}" y="${y}" fill="${fill}" font-family="${MONO_STACK}" font-size="${size}" letter-spacing="${spacing}" text-anchor="${anchor}">${esc(text)}</text>`
-
-/* ------------------------------------------------------------ calendar card */
-
-const MONTHS = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC']
-
-function calendarCard(t, cal) {
-  const CELL = 14
-  const STEP = CELL + 4
-  const originX = 80
-  const originY = 134
-  const W = originX + cal.weeks.length * STEP + 36
-  const H = originY + 7 * STEP + 68
+function calendarCard(cal) {
+  const W = 1200
+  const STEP = 18
+  const LABEL = 14
+  const gridW = cal.weeks.length * STEP
+  const originX = Math.round((W - gridW) / 2 + 20)
+  const originY = 130
+  const H = originY + 7 * STEP + 76
 
   const peak = Math.max(...cal.weeks.flat().map((d) => d.contributionCount), 1)
   const level = (n) => (n === 0 ? 0 : Math.min(4, 1 + Math.floor((n / peak) * 3.999)))
@@ -138,8 +109,8 @@ function calendarCard(t, cal) {
     const month = Number(week[0].date.slice(5, 7)) - 1
     if (month !== starts.at(-1)?.month) starts.push({ month, w })
     for (const day of week) {
-      grid += `
-    <rect x="${originX + w * STEP}" y="${originY + day.weekday * STEP}" width="${CELL}" height="${CELL}" rx="2" fill="${t.scale[level(day.contributionCount)]}"/>`
+      const [glyph, opacity] = LEVELS[level(day.contributionCount)]
+      grid += `<text x="${originX + w * STEP + STEP / 2}" y="${originY + day.weekday * STEP + 12}" fill-opacity="${opacity}">${esc(glyph)}</text>`
     }
   })
 
@@ -147,60 +118,42 @@ function calendarCard(t, cal) {
   // either end of the year would otherwise collide with its neighbour.
   const months = starts
     .filter(({ w }, i) => (starts[i + 1]?.w ?? cal.weeks.length) - w >= 3)
-    .map(({ month, w }) => `\n${label(t, originX + w * STEP, originY - 12, MONTHS[month], { fill: t.muted, size: 12, spacing: 1.2 })}`)
+    .map(({ month, w }) => `<text x="${originX + w * STEP + 4}" y="${originY - 14}">${MONTHS[month]}</text>`)
     .join('')
 
-  const dayLabels = [
-    [1, 'MON'],
-    [3, 'WED'],
-    [5, 'FRI'],
+  const days = [
+    [1, 'mon'],
+    [3, 'wed'],
+    [5, 'fri'],
   ]
-    .map(([i, text]) => label(t, originX - 12, originY + i * STEP + 10, text, { size: 12, spacing: 1.2, anchor: 'end' }))
-    .join('\n')
+    .map(([i, text]) => `<text x="${originX - 10}" y="${originY + i * STEP + 12}" text-anchor="end">${text}</text>`)
+    .join('')
 
-  // Right-aligned "LESS ▪▪▪▪▪ MORE", measured so it never clips the frame.
-  const footY = originY + 7 * STEP + 38
-  const moreX = W - 36 - monoWidth('MORE', 12, 1.2)
-  const swatchX = moreX - 10 - 5 * STEP
-  const legend = t.scale
-    .map((c, i) => `  <rect x="${swatchX + i * STEP}" y="${footY - 11}" width="${CELL}" height="${CELL}" rx="2" fill="${c}"/>`)
-    .join('\n')
+  const footY = originY + 7 * STEP + 40
+  const streaks = `current streak <tspan fill="${INK.bright}">${num(cal.currentStreak)}d</tspan>   longest <tspan fill="${INK.bright}">${num(cal.longestStreak)}d</tspan>`
+  const legend = `less ${LEVELS.map(([glyph, opacity]) => `<tspan fill="${INK.bright}" fill-opacity="${opacity}">${esc(glyph)}</tspan>`).join(' ')} more`
+  const legendW = (4 + 1 + LEVELS.length * 2 + 4) * LABEL * ADVANCE
 
-  let streaks = ''
-  let x = 36
-  for (const [text, value] of [
-    ['CURRENT STREAK', cal.currentStreak],
-    ['LONGEST', cal.longestStreak],
-  ]) {
-    const days = `${num(value)} ${value === 1 ? 'DAY' : 'DAYS'}`
-    streaks += `\n${label(t, x, footY, text)}\n${label(t, x + monoWidth(text, 13, 1.6) + 8, footY, days, { fill: t.fg })}`
-    x += monoWidth(text, 13, 1.6) + 8 + monoWidth(days, 13, 1.6) + 36
-  }
-
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="${esc(`${cal.total} contributions by ${USER} in the last year`)}">
-  <style>
-    @font-face { font-family: 'Instrument Serif'; src: url(data:font/woff2;base64,${SERIF}) format('woff2'); }
-  </style>
-  <rect x="0.5" y="0.5" width="${W - 1}" height="${H - 1}" rx="12" fill="${t.bg}" stroke="${t.border}"/>
-${label(t, 36, 48, 'PUBLIC ACTIVITY · LAST 12 MONTHS', { spacing: 2.8 })}
-  <text x="34" y="92" fill="${t.fg}" font-family="${SERIF_STACK}" font-size="40">${num(cal.total)} contributions</text>${months}
-${dayLabels}
-  <g>${grid}
-  </g>${streaks}
-${legend}
-${label(t, swatchX - 10, footY, 'LESS', { size: 12, spacing: 1.2, anchor: 'end' })}
-${label(t, moreX, footY, 'MORE', { size: 12, spacing: 1.2 })}
-</svg>
-`
+  return panel({
+    w: W,
+    h: H,
+    label: `${cal.total} contributions by ${USER} in the last year`,
+    seed: 37,
+    density: 0.35,
+    body: `    <text x="${originX - 40}" y="58" font-size="20" fill="${INK.bright}">${num(cal.total)} contributions</text>
+    <text x="${originX - 40}" y="86" font-size="14" fill="${INK.muted}">public activity, last 12 months</text>
+    <g font-size="${LABEL}" fill="${INK.muted}">${months}${days}</g>
+    <g font-size="15" fill="${INK.bright}" text-anchor="middle">${grid}</g>
+    <text x="${originX - 40}" y="${footY}" font-size="${LABEL}" fill="${INK.muted}">${streaks}</text>
+    <text x="${Math.round(originX + gridW - legendW)}" y="${footY}" font-size="${LABEL}" fill="${INK.muted}">${legend}</text>`,
+  })
 }
 
 /* -------------------------------------------------------------------- main */
 
 const calendar = await fetchCalendar()
 
-for (const [name, theme] of Object.entries(THEMES)) {
-  await writeFile(join(ASSETS, `calendar-${name}.svg`), calendarCard(theme, calendar))
-}
+await writeFile(join(ASSETS, 'calendar.svg'), calendarCard(calendar))
 
 console.log(
   `✔ calendar generated — ${calendar.total} contributions ` +
