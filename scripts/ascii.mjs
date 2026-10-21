@@ -22,6 +22,9 @@ export const ADVANCE = 0.6
 /** Dark to bright; scripts/ascii-portrait.mjs picks from it, the banner reads it back. */
 export const RAMP = ' .:-=+*#%@'
 
+/** Body text of the about and repository panels. */
+export const TEXT = { size: 17, line: 30, x: 64 }
+
 export const INK = {
   bright: '#ececec',
   text: '#c8c8c8',
@@ -45,46 +48,48 @@ export const esc = (s) =>
   String(s).replace(/[&<>"]/g, (ch) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[ch])
 
 /**
- * Three depths of falling ASCII flakes, scaled to the panel's area. Each layer
- * is drawn twice, stacked, so the fall loops seamlessly.
+ * Three depths of ASCII flakes, scaled to the panel's area. Each depth has its
+ * own character grid: flakes sit on its cells and fall one row at a time, like
+ * a terminal redrawing. Each layer is drawn twice, stacked, so the fall loops.
  */
 function snowfall(seed, w, h, density) {
   const rand = prng(seed)
   const area = ((w * h) / (1200 * 320)) * density
   const depths = [
-    { count: 80, glyphs: '..·', size: 10, opacity: [0.2, 0.45], fall: 52, sway: 8 },
-    { count: 30, glyphs: '**·', size: 12, opacity: [0.3, 0.6], fall: 34, sway: 10 },
-    { count: 7, glyphs: '*', size: 16, opacity: [0.4, 0.7], fall: 21, sway: 14 },
+    { count: 60, glyphs: ".,'", size: 11, opacity: [0.25, 0.5], fall: 48 },
+    { count: 26, glyphs: '*+*', size: 14, opacity: [0.35, 0.65], fall: 30 },
+    { count: 6, glyphs: '*', size: 18, opacity: [0.5, 0.8], fall: 18 },
   ]
   return depths
     .map((d) => {
+      const cols = Math.floor(w / (d.size * ADVANCE))
+      const rows = Math.round(h / (d.size * 1.2))
+      const cell = { w: w / cols, h: h / rows }
       let flakes = ''
       for (let i = 0, n = Math.round(d.count * area); i < n; i++) {
         const glyph = d.glyphs[Math.floor(rand() * d.glyphs.length)]
-        flakes += `<text x="${Math.round(between(rand, 0, w))}" y="${Math.round(between(rand, 0, h))}" fill-opacity="${between(rand, ...d.opacity).toFixed(2)}">${glyph}</text>`
+        const x = (Math.floor(rand() * cols) * cell.w).toFixed(1)
+        const y = ((Math.floor(rand() * rows) + 1) * cell.h).toFixed(1)
+        flakes += `<text x="${x}" y="${y}" fill-opacity="${between(rand, ...d.opacity).toFixed(2)}">${esc(glyph)}</text>`
       }
       return `
-    <g class="sway" font-size="${d.size}" style="--sway: ${d.sway}px; animation-duration: ${(d.fall / 4).toFixed(1)}s">
-      <g class="fall" style="animation-duration: ${d.fall}s">
-        <g>${flakes}</g>
-        <g transform="translate(0 -${h})">${flakes}</g>
-      </g>
+    <g class="fall" font-size="${d.size}" style="animation-duration: ${d.fall}s; animation-timing-function: steps(${rows})">
+      <g>${flakes}</g>
+      <g transform="translate(0 -${h})">${flakes}</g>
     </g>`
     })
     .join('')
 }
 
-/** A black, hairline-framed panel with snow falling behind `body`. */
-export function panel({ w, h, label, seed, body, density = 1 }) {
+/** A black, hairline-framed panel with snow falling behind `body`; `css` adds panel-specific rules. */
+export function panel({ w, h, label, seed, body, density = 1, css = '' }) {
   return `<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" viewBox="0 0 ${w} ${h}" width="${w}" height="${h}" role="img" aria-label="${esc(label)}" font-family="${MONO_STACK}">
   <style>
     @font-face { font-family: 'IBM Plex Mono'; src: url(data:font/woff2;base64,${MONO}) format('woff2'); }
     text { white-space: pre; }
-    .fall { animation: fall linear infinite; }
-    .sway { animation: sway ease-in-out infinite alternate; }
+    .fall { animation: fall infinite; }
     @keyframes fall { from { transform: translateY(0); } to { transform: translateY(${h}px); } }
-    @keyframes sway { from { transform: translateX(calc(var(--sway) * -1)); } to { transform: translateX(var(--sway)); } }
-    @media (prefers-reduced-motion: reduce) { .fall, .sway { animation: none; } }
+    @media (prefers-reduced-motion: reduce) { .fall { animation: none; } }${css}
   </style>
   <clipPath id="frame"><rect width="${w}" height="${h}" rx="12"/></clipPath>
   <g clip-path="url(#frame)">

@@ -40,10 +40,10 @@ jobs:
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          if git diff --quiet -- assets; then
+          if git diff --quiet -- assets README.md; then
             echo "Cards are already up to date."
             exit 0
           fi
-          git add assets
+          git add assets README.md
           git commit -m "chore: refresh profile cards"
           git push

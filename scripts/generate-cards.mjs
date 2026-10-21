@@ -1,22 +1,26 @@
 #!/usr/bin/env node
 /**
- * Generates the contribution calendar used by README.md straight from the
- * GitHub API, so the profile never depends on a third-party stats service.
+ * Generates the live panels of README.md straight from the GitHub API, so the
+ * profile never depends on a third-party stats service: the most starred
+ * repositories and the contribution calendar.
  *
  *   GITHUB_TOKEN=... node scripts/generate-cards.mjs
  *
  * Drawn like the other panels (scripts/ascii.mjs): ASCII on black, under
- * falling snow, each day a glyph that settles heavier as activity grows.
+ * falling snow. The README's links to those repositories, which an image
+ * cannot carry, are rewritten between the top-repos markers.
  *
- * Outputs assets/calendar.svg
+ * Outputs assets/{repos,calendar}.svg and updates README.md
  */
 
-import { writeFile } from 'node:fs/promises'
+import { readFile, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
-import { ADVANCE, ASSETS, INK, esc, panel } from './ascii.mjs'
+import { ADVANCE, ASSETS, INK, TEXT, esc, panel } from './ascii.mjs'
 
 const USER = process.env.PROFILE_USER ?? 'lxwiq'
 const TOKEN = process.env.GITHUB_TOKEN
+const README = join(ASSETS, '..', 'README.md')
+const TOP = 6
 
 if (!TOKEN) {
   console.error('GITHUB_TOKEN is required')
@@ -50,9 +54,13 @@ async function graphql(query, variables) {
   return body.data
 }
 
+// Public repos only — a link to a private one 404s for every visitor.
 const QUERY = `
 query ($login: String!) {
   user(login: $login) {
+    repositories(ownerAffiliations: OWNER, privacy: PUBLIC, isFork: false, first: 20, orderBy: { field: STARGAZERS, direction: DESC }) {
+      nodes { name url description stargazerCount primaryLanguage { name } }
+    }
     contributionsCollection {
       contributionCalendar {
         totalContributions
@@ -62,8 +70,10 @@ query ($login: String!) {
   }
 }`
 
-async function fetchCalendar() {
+async function fetchProfile() {
   const { user } = await graphql(QUERY, { login: USER })
+  // The profile repository is this README; it has no place in its own list.
+  const repos = user.repositories.nodes.filter((r) => r.name.toLowerCase() !== USER.toLowerCase()).slice(0, TOP)
   const calendar = user.contributionsCollection.contributionCalendar
   const weeks = calendar.weeks.map((w) => w.contributionDays)
   const days = weeks.flat()
@@ -82,7 +92,61 @@ async function fetchCalendar() {
     else if (i < days.length - 1) break
   }
 
-  return { weeks, total: calendar.totalContributions, longestStreak: longest, currentStreak: current }
+  return {
+    repos,
+    calendar: { weeks, total: calendar.totalContributions, longestStreak: longest, currentStreak: current },
+  }
+}
+
+/* --------------------------------------------------------------- repos card */
+
+function reposCard(repos) {
+  const W = 1200
+  const cols = Math.floor((W - TEXT.x * 2) / (TEXT.size * ADVANCE))
+  const nameWidth = Math.max(...repos.map((r) => r.name.length)) + 2
+  const starsWidth = Math.max(...repos.map((r) => String(r.stargazerCount).length))
+  const descWidth = cols - 4 - (nameWidth + 1) - (starsWidth + 5) - 12
+
+  const clip = (text, width) => (text.length > width ? `${text.slice(0, width - 1).trimEnd()}…` : text)
+
+  let y = 72
+  let lines = `    <text x="${TEXT.x}" y="${y}" fill="${INK.faint}">most starred</text>`
+  repos.forEach((r, i) => {
+    y += TEXT.line
+    const branch = i === repos.length - 1 ? '`-- ' : '|-- '
+    const leader = ` ${'.'.repeat(nameWidth - r.name.length - 1)} `
+    const stars = `* ${String(r.stargazerCount).padStart(starsWidth)}   `
+    const lang = (r.primaryLanguage?.name ?? '').toLowerCase().padEnd(12)
+    const desc = clip((r.description ?? '').toLowerCase(), descWidth)
+    lines += `
+    <text x="${TEXT.x}" y="${y}"><tspan fill="${INK.faint}">${esc(branch)}</tspan><tspan fill="${INK.bright}">${esc(r.name.toLowerCase())}</tspan><tspan fill="${INK.faint}">${leader}</tspan><tspan fill="${INK.text}">${esc(stars)}</tspan><tspan fill="${INK.faint}">${esc(lang)}</tspan><tspan fill="${INK.muted}">${esc(desc)}</tspan></text>`
+  })
+
+  return panel({
+    w: W,
+    h: y + 56,
+    label: `Most starred repositories: ${repos.map((r) => `${r.name} (${r.stargazerCount} stars)`).join(', ')}`,
+    seed: 31,
+    density: 0.5,
+    body: `  <g font-size="${TEXT.size}">
+${lines}
+  </g>`,
+  })
+}
+
+/** Rewrites the links under the panels, which an image cannot carry. */
+async function updateReadme(repos) {
+  const START = '<!-- top-repos:start -->'
+  const END = '<!-- top-repos:end -->'
+  const readme = await readFile(README, 'utf8')
+  const from = readme.indexOf(START)
+  const to = readme.indexOf(END)
+  if (from < 0 || to < from) {
+    console.warn('⚠ top-repos markers not found in README.md — links left as they are')
+    return
+  }
+  const links = repos.map((r) => `    <a href="${esc(r.url)}">${esc(r.name.toLowerCase())}</a>`).join(' ·\n')
+  await writeFile(README, `${readme.slice(0, from + START.length)}\n${links}\n    ${readme.slice(to)}`)
 }
 
 /* ------------------------------------------------------------ calendar card */
@@ -151,11 +215,13 @@ function calendarCard(cal) {
 
 /* -------------------------------------------------------------------- main */
 
-const calendar = await fetchCalendar()
+const { repos, calendar } = await fetchProfile()
 
+await writeFile(join(ASSETS, 'repos.svg'), reposCard(repos))
 await writeFile(join(ASSETS, 'calendar.svg'), calendarCard(calendar))
+await updateReadme(repos)
 
 console.log(
-  `✔ calendar generated — ${calendar.total} contributions ` +
-    `(streak ${calendar.currentStreak}d, best ${calendar.longestStreak}d)`,
+  `✔ panels generated — top ${repos.length} repos (${repos.map((r) => `${r.name} ${r.stargazerCount}★`).join(', ')}), ` +
+    `${calendar.total} contributions (streak ${calendar.currentStreak}d, best ${calendar.longestStreak}d)`,
 )
