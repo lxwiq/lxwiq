@@ -1,14 +1,10 @@
 <p>
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="./assets/header-dark.svg">
-  <source media="(prefers-color-scheme: light)" srcset="./assets/header-light.svg">
-  <img alt="Loïc (@lxwiq), full-stack developer at Baguetoast, Strasbourg" src="./assets/header-dark.svg" width="100%">
-</picture>
+  <img alt="lxwiq" src="./assets/header.svg" width="100%">
 </p>
 
 I build [Baguetoast](https://baguetoast.com), game server hosting made in France — from the Elixir control plane down to the bare-metal nodes. On the side, I write self-hosting tools I actually use.
 
-**Currently** working on the new Baguetoast dashboard and our Pelican Wings orchestration layer.
+**Currently** working on the new Baguetoast dashboard.
 
 **Stack** — Elixir, Phoenix, TypeScript, Svelte, Go, Kotlin, PostgreSQL, Docker.
 
