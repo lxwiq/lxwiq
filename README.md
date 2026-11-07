@@ -13,7 +13,7 @@
     <a href="https://github.com/lxwiq/palworld-wine-egg">palworld-wine-egg</a> ·
     <a href="https://github.com/lxwiq/soundground">soundground</a> ·
     <a href="https://github.com/lxwiq/lolos-bbox-4k">lolos-bbox-4k</a> ·
-    <a href="https://github.com/lxwiq/plantule">plantule</a>
+    <a href="https://github.com/lxwiq/jellyseerr-bulk-manager">jellyseerr-bulk-manager</a>
     <!-- top-repos:end -->
   </sub>
 </p>
